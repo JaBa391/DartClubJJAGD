@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full bg-slate-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dart Club JJAGD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome für Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Rajdhani -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        dart: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        dartGreen: '#10B981',
+                        dartRed: '#EF4444',
+                        dartGold: '#F59E0B',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glow-green { box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="h-full text-slate-100 flex flex-col font-sans antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- ========================================== -->
+    <!-- LOGIN SCREEN                               -->
+    <!-- ========================================== -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
+        <div class="w-full max-w-md glass-panel p-8 rounded-2xl shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute -bottom-12 -left-12 w-32 h-32 bg-red-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-900 border-2 border-emerald-500 glow-green mb-4 text-emerald-400 text-3xl">
+                    🎯
+                </div>
+                <h1 class="text-3xl font-dart font-bold tracking-wider text-white uppercase">Dart Club JJAGD</h1>
+                <p class="text-xs text-slate-400 mt-1">Liga-Portal 2026</p>
+            </div>
+
+            <form id="login-form" class="space-y-5" onsubmit="handleLogin(event)">
+                <div id="login-error" class="hidden p-3 rounded-lg bg-red-500/20 border border-red-500/50 text-red-300 text-sm text-center">
+                    <i class="fa-solid fa-triangle-exclamation mr-2"></i> Ungültiger Name oder Passwort!
+                </div>
+
+                <div>
+                    <label for="username" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Spieler auswählen</label>
+                    <select id="username" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-emerald-500">
+                        <option value="" disabled selected>Bitte Namen wählen...</option>
+                        <option value="Adrian">Adrian</option>
+                        <option value="Jeff">Jeff</option>
+                        <option value="Dennis">Dennis</option>
+                        <option value="Achim">Achim</option>
+                        <option value="Jan">Jan</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Passwort</label>
+                    <input type="password" id="password" placeholder="Passwort eingeben" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:outline-none focus:border-emerald-500">
+                    <p class="text-[11px] text-slate-500 mt-1">Erstanmeldung/Reset: Master-Passwort <code class="text-emerald-400 font-mono">Liga2026</code></p>
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-emerald-900/30 transition flex items-center justify-center gap-2">
+                    <span>Anmelden</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MAIN SCREEN                                -->
+    <!-- ========================================== -->
+    <div id="main-screen" class="hidden min-h-screen flex flex-col bg-slate-950">
+        
+        <!-- HEADER -->
+        <header class="glass-panel sticky top-0 z-50 border-b border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">🎯</span>
+                    <span class="font-dart text-xl font-bold tracking-wider text-emerald-400">DART CLUB JJAGD</span>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <!-- ADMIN BUTTON (NUR FÜR JAN) -->
+                    <button id="admin-reset-btn" onclick="openAdminModal()" class="hidden text-xs bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/50 text-amber-300 px-3 py-1.5 rounded-lg transition items-center gap-1.5 font-semibold">
+                        <i class="fa-solid fa-key text-amber-400"></i> Admin (Passwörter)
+                    </button>
+
+                    <!-- DATEN SICHERUNG / EXPORT & IMPORT -->
+                    <div class="hidden sm:flex items-center gap-2">
+                        <button onclick="exportJSONBackup()" title="Vollständiges Backup (JSON) herunterladen" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-download text-emerald-400"></i> Backup
+                        </button>
+                        <button onclick="exportExcelCSV()" title="Als Excel / CSV Tabelle exportieren" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-file-excel text-emerald-500"></i> Excel (CSV)
+                        </button>
+                        <button onclick="triggerImportJSON()" title="Backup wiederherstellen" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-upload text-amber-400"></i> Import
+                        </button>
+                        <input type="file" id="import-file-input" accept=".json" class="hidden" onchange="importJSONBackup(event)">
+                    </div>
+
+                    <div class="flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-full border border-slate-800">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                        <span id="user-display" class="text-sm font-medium text-slate-200">...</span>
+                    </div>
+                    <button onclick="handleLogout()" class="text-slate-400 hover:text-red-400 p-2 rounded-lg hover:bg-slate-900 transition" title="Abmelden">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+            <!-- MOBILE BACKUP & EXPORT BAR -->
+            <div class="sm:hidden glass-panel p-3 rounded-xl flex items-center justify-around border border-slate-800 text-xs">
+                <button onclick="exportJSONBackup()" class="text-slate-300 hover:text-white flex items-center gap-1">
+                    <i class="fa-solid fa-download text-emerald-400"></i> Backup
+                </button>
+                <button onclick="exportExcelCSV()" class="text-slate-300 hover:text-white flex items-center gap-1">
+                    <i class="fa-solid fa-file-excel text-emerald-500"></i> Excel
+                </button>
+                <button onclick="triggerImportJSON()" class="text-slate-300 hover:text-white flex items-center gap-1">
+                    <i class="fa-solid fa-upload text-amber-400"></i> Import
+                </button>
+            </div>
+
+            <!-- NAVIGATION TABS -->
+            <div class="flex border-b border-slate-800 space-x-6">
+                <button onclick="switchTab('schedule')" id="tab-schedule-btn" class="pb-3 px-1 font-medium text-emerald-400 border-b-2 border-emerald-500 transition flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-days"></i> Spielplan & Ergebnisse
+                </button>
+                <button onclick="switchTab('ranking')" id="tab-ranking-btn" class="pb-3 px-1 font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent transition flex items-center gap-2">
+                    <i class="fa-solid fa-trophy"></i> Rangliste & Punkte
+                </button>
+            </div>
+
+            <!-- TAB 1: SPIELPLAN & ERGEBNISSE -->
+            <div id="tab-schedule" class="space-y-6">
+                <!-- BENACHRICHTIGUNG BEI AUSSTEHENDEN BESTÄTIGUNGEN -->
+                <div id="pending-confirmations-box" class="hidden glass-panel border-l-4 border-amber-500 p-4 rounded-xl">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-bell text-amber-400 text-xl animate-bounce"></i>
+                        <div>
+                            <h4 class="font-bold text-amber-300">Ausstehende Bestätigung vorhanden!</h4>
+                            <p class="text-xs text-slate-300">Dein Gegner hat eine Änderung an einem Ergebnis angefragt. Bitte überprüfe die Partien unten.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SPIELTAGE UMSCHALTER -->
+                <div class="flex items-center justify-between glass-panel p-4 rounded-xl border border-slate-800">
+                    <button onclick="changeMatchday(-1)" id="prev-md-btn" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-lg text-sm border border-slate-700 transition">
+                        <i class="fa-solid fa-chevron-left mr-1"></i> Vorheriger
+                    </button>
+                    <div class="text-center">
+                        <div class="flex items-center justify-center gap-2">
+                            <h2 id="matchday-title" class="text-xl font-bold font-dart text-white">Spieltag 1</h2>
+                            <span id="current-md-badge" class="hidden text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-2 py-0.5 rounded-full animate-pulse">AKTUELL</span>
+                        </div>
+                        <span id="matchday-date" class="text-xs text-emerald-400 font-semibold">13.11.2026 – 27.11.2026</span>
+                    </div>
+                    <button onclick="changeMatchday(1)" id="next-md-btn" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-lg text-sm border border-slate-700 transition">
+                        Nächster <i class="fa-solid fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- SPIELE DES SPIELTAGS LISTE -->
+                <div id="matches-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamisch befüllt -->
+                </div>
+            </div>
+
+            <!-- TAB 2: RANGLISTE -->
+            <div id="tab-ranking" class="hidden space-y-6">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-trophy text-amber-400"></i> Aktuelle Liga-Tabelle
+                            </h3>
+                            <p class="text-xs text-slate-400 mt-1">Punkte: 1 Pkt pro gewonnener Leg + 1 Bonuspunkt für den Sieg eines Matches (bis 5).</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="exportExcelCSV()" class="text-xs bg-slate-900 hover:bg-slate-800 text-emerald-400 border border-slate-700 px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-file-excel"></i> Tabelle exportieren
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-slate-300">
+                            <thead class="text-xs uppercase bg-slate-900 text-slate-400 border-b border-slate-800">
+                                <tr>
+                                    <th class="py-3.5 px-4">Rang</th>
+                                    <th class="py-3.5 px-4">Spieler</th>
+                                    <th class="py-3.5 px-4 text-center">Spieltage</th>
+                                    <th class="py-3.5 px-4 text-center">Match-Siege</th>
+                                    <th class="py-3.5 px-4 text-center">Legs (W:L)</th>
+                                    <th class="py-3.5 px-4 text-center">Leg-Diff.</th>
+                                    <th class="py-3.5 px-4 text-right">Gesamtpunkte</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ranking-table-body" class="divide-y divide-slate-800">
+                                <!-- Dynamisch befüllt -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL: NEUES PASSWORT ERSTELLEN -->
+    <div id="modal-set-password" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="glass-panel p-6 rounded-2xl max-w-md w-full space-y-5 border border-emerald-500/40 relative glow-green">
+            <div class="text-center">
+                <div class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl border border-emerald-500/40">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="text-xl font-bold text-white font-dart">Neues Passwort festlegen</h3>
+                <p class="text-xs text-slate-300 mt-1">Du hast dich mit dem Master-Passwort angemeldet. Bitte erstelle jetzt dein persönliches Passwort.</p>
+            </div>
+
+            <form onsubmit="handleSetNewPassword(event)" class="space-y-4">
+                <div id="set-pwd-error" class="hidden text-xs text-red-400 bg-red-500/20 border border-red-500/40 p-2.5 rounded-lg text-center">
+                    Passwörter stimmen nicht überein!
+                </div>
+
+                <div>
+                    <label for="new-password" class="block text-xs font-semibold text-slate-400 mb-1">Neues Passwort</label>
+                    <input type="password" id="new-password" required minlength="4" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <div>
+                    <label for="confirm-password" class="block text-xs font-semibold text-slate-400 mb-1">Passwort wiederholen</label>
+                    <input type="password" id="confirm-password" required minlength="4" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-emerald-950/40">
+                    Passwort speichern & fortfahren
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: ADMIN PASSWÖRTER ZURÜCKSETZEN (NUR FÜR JAN) -->
+    <div id="modal-admin-reset" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+        <div class="glass-panel p-6 rounded-2xl max-w-md w-full space-y-5 border border-amber-500/40 relative">
+            <button onclick="closeAdminModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <div>
+                <h3 class="text-xl font-bold text-amber-400 font-dart flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield"></i> Admin: Passwörter zurücksetzen
+                </h3>
+                <p class="text-xs text-slate-400 mt-1">Setze das Passwort eines Spielers auf das Master-Passwort <code class="text-emerald-400">Liga2026</code> zurück.</p>
+            </div>
+
+            <div id="admin-user-list" class="space-y-2">
+                <!-- Dynamisch befüllt -->
+            </div>
+
+            <button onclick="closeAdminModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-2.5 rounded-xl transition text-xs">
+                Schließen
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL FÜR ERGEBNISEINGABE / ÄNDERUNG -->
+    <div id="modal-match-entry" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
+        <div class="glass-panel p-6 rounded-2xl max-w-md w-full space-y-5 border border-slate-800 relative">
+            <button onclick="closeEntryModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div>
+                <h3 id="modal-match-title" class="text-xl font-bold text-white font-dart">Ergebnis eintragen</h3>
+                <p id="modal-match-subtitle" class="text-xs text-slate-400">Ein Spieltag besteht aus 2 Spielen (bis 5 Legs)</p>
+            </div>
+
+            <form onsubmit="submitMatchResult(event)" class="space-y-4">
+                <input type="hidden" id="entry-match-id">
+
+                <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 flex items-center justify-between font-bold">
+                    <span id="modal-p1-name" class="text-emerald-400">Spieler 1</span>
+                    <span class="text-xs text-slate-500">VS</span>
+                    <span id="modal-p2-name" class="text-emerald-400">Spieler 2</span>
+                </div>
+
+                <!-- MATCH 1 -->
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between text-xs font-semibold text-slate-300">
+                        <span><i class="fa-solid fa-bullseye text-emerald-400 mr-1"></i> MATCH 1 (bis 5 Legs)</span>
+                    </div>
+                    <div class="flex items-center justify-center gap-4">
+                        <div class="text-center w-20">
+                            <input type="number" id="entry-m1-score1" min="0" max="5" required class="w-full bg-slate-950 border border-slate-700 text-center text-2xl font-dart font-bold text-emerald-400 rounded-xl py-1.5 focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <span class="text-xl font-bold text-slate-600">:</span>
+                        <div class="text-center w-20">
+                            <input type="number" id="entry-m1-score2" min="0" max="5" required class="w-full bg-slate-950 border border-slate-700 text-center text-2xl font-dart font-bold text-emerald-400 rounded-xl py-1.5 focus:outline-none focus:border-emerald-500">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MATCH 2 -->
+                <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between text-xs font-semibold text-slate-300">
+                        <span><i class="fa-solid fa-bullseye text-emerald-400 mr-1"></i> MATCH 2 (bis 5 Legs)</span>
+                    </div>
+                    <div class="flex items-center justify-center gap-4">
+                        <div class="text-center w-20">
+                            <input type="number" id="entry-m2-score1" min="0" max="5" required class="w-full bg-slate-950 border border-slate-700 text-center text-2xl font-dart font-bold text-emerald-400 rounded-xl py-1.5 focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <span class="text-xl font-bold text-slate-600">:</span>
+                        <div class="text-center w-20">
+                            <input type="number" id="entry-m2-score2" min="0" max="5" required class="w-full bg-slate-950 border border-slate-700 text-center text-2xl font-dart font-bold text-emerald-400 rounded-xl py-1.5 focus:outline-none focus:border-emerald-500">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="edit-notice" class="hidden text-xs text-amber-300 bg-amber-500/10 border border-amber-500/30 p-2.5 rounded-lg">
+                    <i class="fa-solid fa-info-circle mr-1"></i> Da dieses Ergebnis bereits bestätigt war, muss dein Gegner die Änderung erneut bestätigen.
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeEntryModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-2.5 rounded-xl transition">
+                        Abbrechen
+                    </button>
+                    <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 rounded-xl transition shadow-lg shadow-emerald-950/40">
+                        Speichern
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        const PLAYERS = ["Adrian", "Jeff", "Dennis", "Achim", "Jan"];
+        const MASTER_PASSWORD = "Liga2026";
+        const START_DATE = new Date(2026, 10, 13); // 13. November 2026
+
+        let currentUser = "";
+        let currentMatchday = 1;
+
+        // Passwort-Verwaltung
+        let userPasswords = {};
+
+        const SCHEDULE_TEMPLATE = [
+            {
+                matchday: 1,
+                matches: [
+                    { p1: "Jan", p2: "Dennis" },
+                    { p1: "Achim", p2: "Adrian" }
+                ],
+                free: "Jeff"
+            },
+            {
+                matchday: 2,
+                matches: [
+                    { p1: "Jeff", p2: "Jan" },
+                    { p1: "Dennis", p2: "Achim" }
+                ],
+                free: "Adrian"
+            },
+            {
+                matchday: 3,
+                matches: [
+                    { p1: "Adrian", p2: "Jeff" },
+                    { p1: "Jan", p2: "Achim" }
+                ],
+                free: "Dennis"
+            },
+            {
+                matchday: 4,
+                matches: [
+                    { p1: "Dennis", p2: "Adrian" },
+                    { p1: "Achim", p2: "Jeff" }
+                ],
+                free: "Jan"
+            },
+            {
+                matchday: 5,
+                matches: [
+                    { p1: "Jan", p2: "Adrian" },
+                    { p1: "Jeff", p2: "Dennis" }
+                ],
+                free: "Achim"
+            }
+        ];
+
+        let matchData = [];
+
+        function initData() {
+            const savedMatches = localStorage.getItem('dart_liga_2026_matches_v2');
+            if (savedMatches) {
+                try {
+                    matchData = JSON.parse(savedMatches);
+                } catch(e) {
+                    initDefaultSchedule();
+                }
+            } else {
+                initDefaultSchedule();
+            }
+
+            const savedPasswords = localStorage.getItem('dart_liga_2026_passwords');
+            if (savedPasswords) {
+                try {
+                    userPasswords = JSON.parse(savedPasswords);
+                } catch(e) {
+                    initDefaultPasswords();
+                }
+            } else {
+                initDefaultPasswords();
+            }
+        }
+
+        function initDefaultPasswords() {
+            userPasswords = {};
+            PLAYERS.forEach(p => {
+                userPasswords[p] = MASTER_PASSWORD;
+            });
+            savePasswords();
+        }
+
+        function savePasswords() {
+            localStorage.setItem('dart_liga_2026_passwords', JSON.stringify(userPasswords));
+        }
+
+        function initDefaultSchedule() {
+            matchData = [];
+            let idCounter = 1;
+            SCHEDULE_TEMPLATE.forEach(md => {
+                md.matches.forEach(m => {
+                    matchData.push({
+                        id: idCounter++,
+                        matchday: md.matchday,
+                        p1: m.p1,
+                        p2: m.p2,
+                        status: "OPEN",
+                        m1_s1: null,
+                        m1_s2: null,
+                        m2_s1: null,
+                        m2_s2: null,
+                        pending_m1_s1: null,
+                        pending_m1_s2: null,
+                        pending_m2_s1: null,
+                        pending_m2_s2: null,
+                        lastUpdatedBy: null
+                    });
+                });
+            });
+            saveData();
+        }
+
+        function saveData() {
+            localStorage.setItem('dart_liga_2026_matches_v2', JSON.stringify(matchData));
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+
+            if (!PLAYERS.includes(u)) {
+                document.getElementById('login-error').classList.remove('hidden');
+                return;
+            }
+
+            const currentPass = userPasswords[u] || MASTER_PASSWORD;
+
+            if (p === currentPass) {
+                document.getElementById('login-error').classList.add('hidden');
+                currentUser = u;
+
+                if (p === MASTER_PASSWORD) {
+                    document.getElementById('modal-set-password').classList.remove('hidden');
+                    return;
+                }
+
+                completeLogin();
+            } else {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        }
+
+        function handleSetNewPassword(e) {
+            e.preventDefault();
+            const newPwd = document.getElementById('new-password').value;
+            const confirmPwd = document.getElementById('confirm-password').value;
+
+            if (newPwd !== confirmPwd) {
+                document.getElementById('set-pwd-error').classList.remove('hidden');
+                return;
+            }
+
+            userPasswords[currentUser] = newPwd;
+            savePasswords();
+
+            document.getElementById('set-pwd-error').classList.add('hidden');
+            document.getElementById('modal-set-password').classList.add('hidden');
+            document.getElementById('new-password').value = '';
+            document.getElementById('confirm-password').value = '';
+
+            completeLogin();
+        }
+
+        function completeLogin() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('main-screen').classList.remove('hidden');
+            document.getElementById('user-display').innerText = currentUser;
+            
+            const adminBtn = document.getElementById('admin-reset-btn');
+            if (currentUser === "Jan") {
+                adminBtn.classList.remove('hidden');
+                adminBtn.classList.add('flex');
+            } else {
+                adminBtn.classList.add('hidden');
+                adminBtn.classList.remove('flex');
+            }
+
+            currentMatchday = getCurrentActiveMatchday();
+            renderSchedule();
+            renderRanking();
+            checkPendingNotifications();
+        }
+
+        function openAdminModal() {
+            if (currentUser !== "Jan") return;
+            
+            const listContainer = document.getElementById('admin-user-list');
+            let html = '';
+
+            PLAYERS.filter(p => p !== "Jan").forEach(player => {
+                const isMaster = userPasswords[player] === MASTER_PASSWORD;
+                html += `
+                    <div class="flex items-center justify-between bg-slate-900 p-3 rounded-xl border border-slate-800">
+                        <div>
+                            <span class="font-bold text-slate-200">${player}</span>
+                            <span class="block text-[11px] ${isMaster ? 'text-amber-400' : 'text-emerald-400'}">
+                                ${isMaster ? 'Standard (Liga2026)' : 'Individuelles Passwort'}
+                            </span>
+                        </div>
+                        <button onclick="resetUserPassword('${player}')" class="text-xs bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/40 px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+                            <i class="fa-solid fa-rotate-left"></i> Reset
+                        </button>
+                    </div>
+                `;
+            });
+
+            listContainer.innerHTML = html;
+            document.getElementById('modal-admin-reset').classList.remove('hidden');
+        }
+
+        function resetUserPassword(player) {
+            userPasswords[player] = MASTER_PASSWORD;
+            savePasswords();
+            openAdminModal();
+            alert(`Das Passwort für ${player} wurde auf "${MASTER_PASSWORD}" zurückgesetzt.`);
+        }
+
+        function closeAdminModal() {
+            document.getElementById('modal-admin-reset').classList.add('hidden');
+        }
+
+        function getCurrentActiveMatchday() {
+            const today = new Date();
+            if (today < START_DATE) return 1;
+
+            const diffTime = today - START_DATE;
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            const calculatedMd = Math.floor(diffDays / 14) + 1;
+
+            if (calculatedMd > SCHEDULE_TEMPLATE.length) {
+                return SCHEDULE_TEMPLATE.length;
+            }
+            return Math.max(1, calculatedMd);
+        }
+
+        function handleLogout() {
+            currentUser = "";
+            document.getElementById('login-form').reset();
+            document.getElementById('main-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+
+        function getMatchdayDates(mdNumber) {
+            const start = new Date(START_DATE);
+            start.setDate(start.getDate() + (mdNumber - 1) * 14);
+            const end = new Date(start);
+            end.setDate(end.getDate() + 13);
+
+            const formatDate = d => `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth()+1).toString().padStart(2, '0')}.${d.getFullYear()}`;
+            return `${formatDate(start)} – ${formatDate(end)}`;
+        }
+
+        function changeMatchday(delta) {
+            const newMd = currentMatchday + delta;
+            if (newMd >= 1 && newMd <= SCHEDULE_TEMPLATE.length) {
+                currentMatchday = newMd;
+                renderSchedule();
+            }
+        }
+
+        function renderSchedule() {
+            document.getElementById('matchday-title').innerText = `Spieltag ${currentMatchday}`;
+            document.getElementById('matchday-date').innerText = getMatchdayDates(currentMatchday);
+
+            const activeMd = getCurrentActiveMatchday();
+            const badge = document.getElementById('current-md-badge');
+            if (badge) {
+                if (currentMatchday === activeMd) {
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+
+            document.getElementById('prev-md-btn').disabled = currentMatchday === 1;
+            document.getElementById('next-md-btn').disabled = currentMatchday === SCHEDULE_TEMPLATE.length;
+
+            const mdInfo = SCHEDULE_TEMPLATE.find(t => t.matchday === currentMatchday);
+            const matchesInMd = matchData.filter(m => m.matchday === currentMatchday);
+            const container = document.getElementById('matches-list');
+
+            let html = '';
+
+            if (mdInfo && mdInfo.free) {
+                html += `
+                    <div class="md:col-span-2 bg-slate-900/60 border border-slate-800 p-3 rounded-xl flex items-center justify-between text-xs text-slate-400">
+                        <span><i class="fa-solid fa-mug-hot mr-2 text-amber-400"></i>Spielfrei an diesem Spieltag:</span>
+                        <span class="font-bold text-amber-300 px-2 py-0.5 bg-amber-500/10 rounded">${mdInfo.free}</span>
+                    </div>
+                `;
+            }
+
+            matchesInMd.forEach(m => {
+                const isUserInMatch = (m.p1 === currentUser || m.p2 === currentUser);
+                const isPending = m.status === 'PENDING_CONFIRMATION';
+                const isConfirmed = m.status === 'CONFIRMED';
+                const isUserRequester = (m.lastUpdatedBy === currentUser);
+
+                let statusBadge = '';
+                if (m.status === 'OPEN') {
+                    statusBadge = `<span class="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-full border border-slate-700">Offen</span>`;
+                } else if (isConfirmed) {
+                    statusBadge = `<span class="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/30 font-semibold"><i class="fa-solid fa-check mr-1"></i>Eingetragen</span>`;
+                } else if (isPending) {
+                    statusBadge = `<span class="text-xs bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-full border border-amber-500/30 font-semibold"><i class="fa-solid fa-hourglass-half mr-1"></i>Bestätigung ausstehend</span>`;
+                }
+
+                html += `
+                    <div class="glass-panel p-5 rounded-2xl flex flex-col justify-between space-y-4 border ${isUserInMatch ? 'border-emerald-500/30' : 'border-slate-800'} relative">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-slate-500">Spieltag #${m.matchday} Paarung</span>
+                            ${statusBadge}
+                        </div>
+
+                        <!-- PAARUNG HEADER -->
+                        <div class="flex items-center justify-between font-bold text-lg px-2">
+                            <span class="${m.p1 === currentUser ? 'text-emerald-400' : 'text-slate-100'}">${m.p1}</span>
+                            <span class="text-xs text-slate-500 uppercase tracking-widest font-normal">VS</span>
+                            <span class="${m.p2 === currentUser ? 'text-emerald-400' : 'text-slate-100'}">${m.p2}</span>
+                        </div>
+
+                        <!-- MATCHES SCORES DISPLAY -->
+                        <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800/80 space-y-2 text-sm">
+                            ${m.status === 'OPEN' ? `
+                                <div class="text-center text-slate-500 py-3 text-xs italic">Noch kein Ergebnis eingetragen</div>
+                            ` : `
+                                <div class="flex justify-between items-center bg-slate-950/50 px-3 py-1.5 rounded-lg">
+                                    <span class="text-xs text-slate-400 font-semibold">Match 1</span>
+                                    <span class="font-dart font-bold text-base text-emerald-400">${m.m1_s1} : ${m.m1_s2}</span>
+                                </div>
+                                <div class="flex justify-between items-center bg-slate-950/50 px-3 py-1.5 rounded-lg">
+                                    <span class="text-xs text-slate-400 font-semibold">Match 2</span>
+                                    <span class="font-dart font-bold text-base text-emerald-400">${m.m2_s1} : ${m.m2_s2}</span>
+                                </div>
+                            `}
+                        </div>
+
+                        <!-- PENDING CHANGE DETAILS -->
+                        ${isPending ? `
+                            <div class="bg-amber-500/10 border border-amber-500/30 p-3 rounded-xl text-xs space-y-2">
+                                <div class="text-amber-300 font-semibold">
+                                    <i class="fa-solid fa-triangle-exclamation mr-1"></i> Vorschlag von ${m.lastUpdatedBy}:<br>
+                                    <span class="font-mono text-slate-200">Match 1: ${m.pending_m1_s1}:${m.pending_m1_s2} | Match 2: ${m.pending_m2_s1}:${m.pending_m2_s2}</span>
+                                </div>
+                                ${isUserInMatch && !isUserRequester ? `
+                                    <div class="flex gap-2 pt-1">
+                                        <button onclick="confirmMatchChange(${m.id}, true)" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-1.5 rounded-lg text-xs transition">
+                                            Bestätigen
+                                        </button>
+                                        <button onclick="confirmMatchChange(${m.id}, false)" class="flex-1 bg-red-600 hover:bg-red-500 text-white font-semibold py-1.5 rounded-lg text-xs transition">
+                                            Ablehnen
+                                        </button>
+                                    </div>
+                                ` : `
+                                    <div class="text-slate-400 italic">Warte auf Bestätigung durch den Gegner...</div>
+                                `}
+                            </div>
+                        ` : ''}
+
+                        <!-- ACTIONS -->
+                        <div class="pt-1 flex justify-end">
+                            ${!isUserInMatch ? `
+                                <span class="text-xs text-slate-600 italic">Nicht beteiligt</span>
+                            ` : (m.status === 'OPEN' ? `
+                                <button onclick="openEntryModal(${m.id})" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 rounded-xl text-sm transition">
+                                    <i class="fa-solid fa-pen mr-1"></i> Ergebnisse eintragen
+                                </button>
+                            ` : (!isPending ? `
+                                <button onclick="openEntryModal(${m.id})" class="text-xs bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 px-3 py-1.5 rounded-lg transition">
+                                    <i class="fa-solid fa-rotate mr-1"></i> Ergebnisse korrigieren
+                                </button>
+                            ` : ''))}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function calculateRankingData() {
+            const stats = {};
+            PLAYERS.forEach(p => {
+                stats[p] = { name: p, matchdays: 0, matchWins: 0, legsWon: 0, legsLost: 0, legDiff: 0, points: 0 };
+            });
+
+            matchData.forEach(m => {
+                if (m.status === 'CONFIRMED' && stats[m.p1] && stats[m.p2]) {
+                    stats[m.p1].matchdays++;
+                    stats[m.p2].matchdays++;
+
+                    // Match 1
+                    const m1_s1 = m.m1_s1 || 0;
+                    const m1_s2 = m.m1_s2 || 0;
+                    stats[m.p1].legsWon += m1_s1;
+                    stats[m.p1].legsLost += m1_s2;
+                    stats[m.p2].legsWon += m1_s2;
+                    stats[m.p2].legsLost += m1_s1;
+                    stats[m.p1].points += m1_s1;
+                    stats[m.p2].points += m1_s2;
+
+                    if (m1_s1 === 5) { stats[m.p1].points += 1; stats[m.p1].matchWins++; }
+                    if (m1_s2 === 5) { stats[m.p2].points += 1; stats[m.p2].matchWins++; }
+
+                    // Match 2
+                    const m2_s1 = m.m2_s1 || 0;
+                    const m2_s2 = m.m2_s2 || 0;
+                    stats[m.p1].legsWon += m2_s1;
+                    stats[m.p1].legsLost += m2_s2;
+                    stats[m.p2].legsWon += m2_s2;
+                    stats[m.p2].legsLost += m2_s1;
+                    stats[m.p1].points += m2_s1;
+                    stats[m.p2].points += m2_s2;
+
+                    if (m2_s1 === 5) { stats[m.p1].points += 1; stats[m.p1].matchWins++; }
+                    if (m2_s2 === 5) { stats[m.p2].points += 1; stats[m.p2].matchWins++; }
+                }
+            });
+
+            const ranking = Object.values(stats).map(s => {
+                s.legDiff = s.legsWon - s.legsLost;
+                return s;
+            });
+
+            ranking.sort((a, b) => {
+                if (b.points !== a.points) return b.points - a.points;
+                if (b.legDiff !== a.legDiff) return b.legDiff - a.legDiff;
+                return b.legsWon - a.legsWon;
+            });
+
+            return ranking;
+        }
+
+        function renderRanking() {
+            const ranking = calculateRankingData();
+            const tbody = document.getElementById('ranking-table-body');
+
+            tbody.innerHTML = ranking.map((p, idx) => {
+                let badge = `<span class="text-slate-500 font-bold">${idx + 1}</span>`;
+                if (idx === 0) badge = `🥇`;
+                if (idx === 1) badge = `🥈`;
+                if (idx === 2) badge = `🥉`;
+
+                const isCurrent = p.name === currentUser;
+
+                return `
+                    <tr class="${isCurrent ? 'bg-emerald-950/20' : 'hover:bg-slate-900/40'} transition">
+                        <td class="py-3.5 px-4 text-base">${badge}</td>
+                        <td class="py-3.5 px-4 font-semibold ${isCurrent ? 'text-emerald-400 font-bold' : 'text-slate-100'}">
+                            ${p.name} ${isCurrent ? '<span class="text-[10px] ml-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-1.5 py-0.5 rounded">(Du)</span>' : ''}
+                        </td>
+                        <td class="py-3.5 px-4 text-center text-slate-400">${p.matchdays}</td>
+                        <td class="py-3.5 px-4 text-center text-emerald-400 font-medium">${p.matchWins}</td>
+                        <td class="py-3.5 px-4 text-center text-slate-300 font-mono">${p.legsWon} : ${p.legsLost}</td>
+                        <td class="py-3.5 px-4 text-center font-bold ${p.legDiff > 0 ? 'text-emerald-400' : (p.legDiff < 0 ? 'text-red-400' : 'text-slate-400')}">
+                            ${p.legDiff > 0 ? '+' : ''}${p.legDiff}
+                        </td>
+                        <td class="py-3.5 px-4 text-right font-dart font-bold text-white text-xl">${p.points}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openEntryModal(matchId) {
+            const match = matchData.find(m => m.id === matchId);
+            if (!match) return;
+
+            document.getElementById('entry-match-id').value = match.id;
+            document.getElementById('modal-p1-name').innerText = match.p1;
+            document.getElementById('modal-p2-name').innerText = match.p2;
+
+            if (match.status === 'CONFIRMED') {
+                document.getElementById('entry-m1-score1').value = match.m1_s1;
+                document.getElementById('entry-m1-score2').value = match.m1_s2;
+                document.getElementById('entry-m2-score1').value = match.m2_s1;
+                document.getElementById('entry-m2-score2').value = match.m2_s2;
+                document.getElementById('edit-notice').classList.remove('hidden');
+            } else {
+                document.getElementById('entry-m1-score1').value = '';
+                document.getElementById('entry-m1-score2').value = '';
+                document.getElementById('entry-m2-score1').value = '';
+                document.getElementById('entry-m2-score2').value = '';
+                document.getElementById('edit-notice').classList.add('hidden');
+            }
+
+            document.getElementById('modal-match-entry').classList.remove('hidden');
+        }
+
+        function closeEntryModal() {
+            document.getElementById('modal-match-entry').classList.add('hidden');
+        }
+
+        function submitMatchResult(e) {
+            e.preventDefault();
+            const matchId = parseInt(document.getElementById('entry-match-id').value);
+            const m1_s1 = parseInt(document.getElementById('entry-m1-score1').value);
+            const m1_s2 = parseInt(document.getElementById('entry-m1-score2').value);
+            const m2_s1 = parseInt(document.getElementById('entry-m2-score1').value);
+            const m2_s2 = parseInt(document.getElementById('entry-m2-score2').value);
+
+            const match = matchData.find(m => m.id === matchId);
+            if (!match) return;
+
+            if (match.status === 'OPEN') {
+                match.m1_s1 = m1_s1;
+                match.m1_s2 = m1_s2;
+                match.m2_s1 = m2_s1;
+                match.m2_s2 = m2_s2;
+                match.status = 'CONFIRMED';
+                match.lastUpdatedBy = currentUser;
+            } else if (match.status === 'CONFIRMED') {
+                match.pending_m1_s1 = m1_s1;
+                match.pending_m1_s2 = m1_s2;
+                match.pending_m2_s1 = m2_s1;
+                match.pending_m2_s2 = m2_s2;
+                match.status = 'PENDING_CONFIRMATION';
+                match.lastUpdatedBy = currentUser;
+            }
+
+            saveData();
+            closeEntryModal();
+            renderSchedule();
+            renderRanking();
+            checkPendingNotifications();
+        }
+
+        function confirmMatchChange(matchId, isApproved) {
+            const match = matchData.find(m => m.id === matchId);
+            if (!match) return;
+
+            if (isApproved) {
+                match.m1_s1 = match.pending_m1_s1;
+                match.m1_s2 = match.pending_m1_s2;
+                match.m2_s1 = match.pending_m2_s1;
+                match.m2_s2 = match.pending_m2_s2;
+                match.status = 'CONFIRMED';
+            } else {
+                match.status = 'CONFIRMED';
+            }
+
+            match.pending_m1_s1 = null;
+            match.pending_m1_s2 = null;
+            match.pending_m2_s1 = null;
+            match.pending_m2_s2 = null;
+            saveData();
+            renderSchedule();
+            renderRanking();
+            checkPendingNotifications();
+        }
+
+        function checkPendingNotifications() {
+            const pendingForUser = matchData.some(m => 
+                m.status === 'PENDING_CONFIRMATION' && 
+                (m.p1 === currentUser || m.p2 === currentUser) && 
+                m.lastUpdatedBy !== currentUser
+            );
+
+            const box = document.getElementById('pending-confirmations-box');
+            if (pendingForUser) {
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        }
+
+        function switchTab(tab) {
+            const schedTab = document.getElementById('tab-schedule');
+            const rankTab = document.getElementById('tab-ranking');
+            const schedBtn = document.getElementById('tab-schedule-btn');
+            const rankBtn = document.getElementById('tab-ranking-btn');
+
+            if (tab === 'schedule') {
+                schedTab.classList.remove('hidden');
+                rankTab.classList.add('hidden');
+                schedBtn.className = "pb-3 px-1 font-medium text-emerald-400 border-b-2 border-emerald-500 transition flex items-center gap-2";
+                rankBtn.className = "pb-3 px-1 font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent transition flex items-center gap-2";
+            } else {
+                schedTab.classList.add('hidden');
+                rankTab.classList.remove('hidden');
+                rankBtn.className = "pb-3 px-1 font-medium text-emerald-400 border-b-2 border-emerald-500 transition flex items-center gap-2";
+                schedBtn.className = "pb-3 px-1 font-medium text-slate-400 hover:text-slate-200 border-b-2 border-transparent transition flex items-center gap-2";
+            }
+        }
+
+        // EXPORT & IMPORT (JSON BACKUP + EXCEL CSV)
+        function exportJSONBackup() {
+            const payload = {
+                matches: matchData,
+                passwords: userPasswords
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `dart_club_jjagd_backup_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function triggerImportJSON() {
+            document.getElementById('import-file-input').click();
+        }
+
+        function importJSONBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (importedData.matches && Array.isArray(importedData.matches)) {
+                        matchData = importedData.matches;
+                        saveData();
+                    }
+                    if (importedData.passwords) {
+                        userPasswords = importedData.passwords;
+                        savePasswords();
+                    }
+
+                    renderSchedule();
+                    renderRanking();
+                    checkPendingNotifications();
+                    alert("Backup (Spiele & Passwörter) erfolgreich importiert!");
+                } catch (err) {
+                    alert("Fehler beim Lesen der Datei: " + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function exportExcelCSV() {
+            const ranking = calculateRankingData();
+            
+            let csvContent = "\uFEFF"; // UTF-8 BOM für Excel
+            csvContent += "DART CLUB JJAGD - TABELLE & ERGEBNISSE\n\n";
+
+            // Tabelle
+            csvContent += "Rang;Spieler;Spieltage;Match-Siege;Legs Gewonnen;Legs Verloren;Leg-Differenz;Gesamtpunkte\n";
+            ranking.forEach((r, idx) => {
+                csvContent += `${idx + 1};${r.name};${r.matchdays};${r.matchWins};${r.legsWon};${r.legsLost};${r.legDiff};${r.points}\n`;
+            });
+
+            csvContent += "\n\nMATCH-ERGEBNISSE\n";
+            csvContent += "Spieltag;Spieler 1;Spieler 2;Status;Match 1 (Legs);Match 2 (Legs)\n";
+            matchData.forEach(m => {
+                const m1 = m.status !== 'OPEN' ? `${m.m1_s1}:${m.m1_s2}` : '-';
+                const m2 = m.status !== 'OPEN' ? `${m.m2_s1}:${m.m2_s2}` : '-';
+                csvContent += `${m.matchday};${m.p1};${m.p2};${m.status};${m1};${m2}\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", url);
+            downloadAnchor.setAttribute("download", `dart_club_jjagd_tabelle_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        window.onload = function() {
+            initData();
+        };
+    </script>
+</body>
+</html>
