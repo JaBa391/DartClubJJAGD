@@ -237,7 +237,7 @@
 
         @media (max-width: 480px) {
             .nav-text-long {
-                display: none; /* Text ausblenden am Handy */
+                display: none;
             }
             .nav-btn {
                 padding: 10px 16px;
@@ -314,7 +314,7 @@
         /* --- TABELLE OPTIMIERUNG --- */
         .table-container {
             width: 100%;
-            overflow-x: auto; /* Horizontal Scroll am Handy */
+            overflow-x: auto;
             -webkit-overflow-scrolling: touch;
             margin-top: 15px;
             border-radius: 8px;
@@ -325,7 +325,7 @@
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            white-space: nowrap; /* Zeilenumbruch in Spalten verhindern */
+            white-space: nowrap;
         }
 
         th, td {
@@ -379,14 +379,6 @@
         .legs-input-group input {
             width: 70px;
             text-align: center;
-        }
-
-        .admin-section {
-            margin-top: 25px;
-            background: rgba(255,215,0,0.05);
-            border: 1px solid rgba(255,215,0,0.2);
-            padding: 12px;
-            border-radius: 8px;
         }
 
         .current-badge {
@@ -539,7 +531,6 @@
     const MASTER_PW = "Liga2026";
     const SEASON_START_DATE = new Date(2026, 10, 13); // 13. November 2026
 
-    // 10 Spieltage (Hin- und Rückrunde)
     const SCHEDULE = [
         { round: 1, matches: [ {p1: "Jan", p2: "Dennis"}, {p1: "Achim", p2: "Adrian"} ], bye: "Jeff" },
         { round: 2, matches: [ {p1: "Jeff", p2: "Jan"}, {p1: "Dennis", p2: "Achim"} ], bye: "Adrian" },
@@ -557,6 +548,7 @@
     let currentMatchday = 1;
     let appData = {
         passwords: {},
+        isDefaultPassword: {},
         matches: {}
     };
 
@@ -564,8 +556,18 @@
         const stored = localStorage.getItem('dart_club_jjagd_data');
         if (stored) {
             appData = JSON.parse(stored);
+            // Für ältere Backups sicherstellen, dass isDefaultPassword existiert
+            PLAYERS.forEach(p => {
+                if (!appData.passwords[p]) appData.passwords[p] = MASTER_PW;
+                if (appData.isDefaultPassword[p] === undefined) {
+                    appData.isDefaultPassword[p] = (appData.passwords[p] === MASTER_PW);
+                }
+            });
         } else {
-            PLAYERS.forEach(p => appData.passwords[p] = MASTER_PW);
+            PLAYERS.forEach(p => {
+                appData.passwords[p] = MASTER_PW;
+                appData.isDefaultPassword[p] = true;
+            });
             saveData();
         }
     }
@@ -590,7 +592,7 @@
             const { start, end } = getMatchdayDates(i);
             if (now >= start && now <= end) return i;
         }
-        return 1; // Fallback
+        return 1;
     }
 
     function login() {
@@ -604,14 +606,16 @@
             return;
         }
 
-        const storedPw = appData.passwords[player] || MASTER_PW;
+        const storedPw = appData.passwords[player];
+        const mustChangePw = appData.isDefaultPassword[player];
 
         if (pw === storedPw) {
             currentUser = player;
             err.style.display = 'none';
             document.getElementById('password-input').value = '';
 
-            if (pw === MASTER_PW) {
+            // Nur wenn es noch das Standard-Passwort ist, muss ein neues vergeben werden
+            if (mustChangePw) {
                 document.getElementById('pw-change-modal').style.display = 'flex';
             } else {
                 startDashboard();
@@ -639,6 +643,7 @@
         }
 
         appData.passwords[currentUser] = p1;
+        appData.isDefaultPassword[currentUser] = false; // Ab jetzt kein Standardpasswort mehr!
         saveData();
         document.getElementById('pw-change-modal').style.display = 'none';
         startDashboard();
@@ -686,7 +691,6 @@
 
         const roundData = SCHEDULE[currentMatchday - 1];
 
-        // Spielfrei Anzeige
         const byeCard = document.createElement('div');
         byeCard.className = 'match-card';
         byeCard.style.opacity = '0.6';
@@ -751,7 +755,6 @@
         const body = document.getElementById('modal-body');
 
         title.innerText = isCorrection ? "Ergebnis korrigieren" : "Ergebnis eintragen";
-
         const existing = appData.matches[matchKey] || {};
 
         body.innerHTML = `
@@ -785,7 +788,6 @@
             <button class="btn" onclick="submitResult('${matchKey}', '${p1}', '${p2}')">Eintragen / Zur Bestätigung senden</button>
             <button class="btn btn-secondary" style="margin-top:8px;" onclick="closeModal()">Abbrechen</button>
         `;
-
         modal.style.display = 'flex';
     }
 
@@ -825,9 +827,8 @@
                 <p><strong>Match 2:</strong> ${m.p1} ${m.m2_p1} : ${m.m2_p2} ${m.p2}</p>
             </div>
             <button class="btn" onclick="confirmResult('${matchKey}', true)">✅ Ergebnis Bestätigen</button>
-            <button class="btn btn-danger" style="margin-top:8px;" onclick="confirmResult('${matchKey}', false)">❌ Ablehnen / Ablehnen</button>
+            <button class="btn btn-danger" style="margin-top:8px;" onclick="confirmResult('${matchKey}', false)">❌ Ablehnen</button>
         `;
-
         modal.style.display = 'flex';
     }
 
@@ -860,7 +861,6 @@
                 stats[p1].played += 1;
                 stats[p2].played += 1;
 
-                // Match 1
                 stats[p1].legsWon += m.m1_p1;
                 stats[p1].legsLost += m.m1_p2;
                 stats[p1].points += m.m1_p1;
@@ -869,10 +869,9 @@
                 stats[p2].legsLost += m.m1_p1;
                 stats[p2].points += m.m1_p2;
 
-                if (m.m1_p1 === 5) stats[p1].points += 1; // Bonuspunkt Match 1
+                if (m.m1_p1 === 5) stats[p1].points += 1;
                 if (m.m1_p2 === 5) stats[p2].points += 1;
 
-                // Match 2
                 stats[p1].legsWon += m.m2_p1;
                 stats[p1].legsLost += m.m2_p2;
                 stats[p1].points += m.m2_p1;
@@ -881,7 +880,7 @@
                 stats[p2].legsLost += m.m2_p1;
                 stats[p2].points += m.m2_p2;
 
-                if (m.m2_p1 === 5) stats[p1].points += 1; // Bonuspunkt Match 2
+                if (m.m2_p1 === 5) stats[p1].points += 1;
                 if (m.m2_p2 === 5) stats[p2].points += 1;
             }
         });
@@ -915,13 +914,12 @@
         });
     }
 
-    // --- ADMIN MODAL FUNCTIONS ---
     function openAdminModal() {
         const list = document.getElementById('admin-player-list');
         list.innerHTML = '';
 
         PLAYERS.forEach(p => {
-            const isMaster = (appData.passwords[p] === MASTER_PW);
+            const isMaster = appData.isDefaultPassword[p];
             const item = document.createElement('div');
             item.style.cssText = "display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:rgba(0,0,0,0.2); padding:10px; border-radius:6px;";
             item.innerHTML = `
@@ -940,6 +938,7 @@
     function resetPlayerPassword(player) {
         if (confirm(`Passwort für ${player} wirklich auf 'Liga2026' zurücksetzen?`)) {
             appData.passwords[player] = MASTER_PW;
+            appData.isDefaultPassword[player] = true;
             saveData();
             openAdminModal();
         }
@@ -949,7 +948,6 @@
         document.getElementById('admin-modal').style.display = 'none';
     }
 
-    // --- DATA EXPORT / IMPORT ---
     function exportJSON() {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
         const downloadAnchor = document.createElement('a');
@@ -970,6 +968,10 @@
                 const importedData = JSON.parse(e.target.result);
                 if (importedData.passwords && importedData.matches) {
                     appData = importedData;
+                    if (!appData.isDefaultPassword) {
+                        appData.isDefaultPassword = {};
+                        PLAYERS.forEach(p => appData.isDefaultPassword[p] = (appData.passwords[p] === MASTER_PW));
+                    }
                     saveData();
                     alert("Daten erfolgreich importiert!");
                     renderDashboard();
@@ -1003,7 +1005,6 @@
         link.remove();
     }
 
-    // App Initialisieren
     initData();
 </script>
 </body>
