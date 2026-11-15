@@ -51,17 +51,11 @@
             box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
         }
 
-        /* HEADER & ADMIN BAR */
+        /* HEADER */
         .hero-header {
             background: linear-gradient(135deg, #1b1f24 0%, #14171a 60%, #261414 100%);
-            padding: 24px 20px;
+            padding: 20px;
             border-bottom: 2px solid var(--brass);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .brand-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -69,79 +63,63 @@
             gap: 12px;
         }
 
+        .brand-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
         .brand-title {
             font-family: 'Oswald', sans-serif;
-            font-size: 2.1rem;
+            font-size: 2rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: var(--sisal-cream);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            line-height: 1.1;
         }
 
         .brand-title span.accent {
             color: var(--brass);
         }
 
-        .season-pill {
-            background-color: rgba(212, 175, 55, 0.15);
-            border: 1px solid var(--brass);
+        .season-sub {
             color: var(--brass);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* KOMPAKTER ADMIN BUTTON */
+        .admin-trigger {
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 0.8rem;
             font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 999px;
-            letter-spacing: 0.5px;
-        }
-
-        /* ADMIN LOGIN BAR ON MAIN PAGE */
-        .admin-bar {
-            background-color: rgba(0, 0, 0, 0.35);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px 14px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .admin-status {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .admin-status.active {
-            color: var(--dart-green-light);
-            font-weight: 600;
-        }
-
-        .admin-form {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .admin-input {
-            background-color: var(--bg-main);
-            border: 1px solid var(--border);
-            color: var(--text-main);
-            padding: 8px 12px;
+            padding: 7px 13px;
             border-radius: 8px;
-            font-size: 0.9rem;
-            min-height: 40px;
-            outline: none;
+            border: 1px solid var(--border);
+            background-color: rgba(0, 0, 0, 0.35);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .admin-input:focus {
+        .admin-trigger:hover {
             border-color: var(--brass);
+            color: var(--brass);
+        }
+
+        .admin-trigger.logged-in {
+            background-color: rgba(21, 128, 61, 0.25);
+            border-color: var(--dart-green-light);
+            color: var(--dart-green-light);
         }
 
         /* BUTTONS */
@@ -174,15 +152,6 @@
 
         .btn-brass:hover {
             background-color: var(--brass-hover);
-        }
-
-        .btn-red {
-            background-color: var(--dart-red);
-            color: #fff;
-        }
-
-        .btn-red:hover {
-            background-color: var(--dart-red-hover);
         }
 
         .btn-green {
@@ -464,7 +433,7 @@
             display: flex;
         }
 
-        /* MODAL */
+        /* MODALS */
         .modal-backdrop {
             display: none;
             position: fixed;
@@ -486,7 +455,7 @@
             border-radius: 14px;
             padding: 24px;
             width: 100%;
-            max-width: 440px;
+            max-width: 420px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
         }
 
@@ -502,6 +471,22 @@
             font-size: 0.9rem;
             color: var(--text-muted);
             margin-bottom: 18px;
+        }
+
+        .modal-input {
+            width: 100%;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            min-height: 46px;
+            outline: none;
+        }
+
+        .modal-input:focus {
+            border-color: var(--brass);
         }
 
         .leg-group {
@@ -582,17 +567,7 @@
                 padding: 8px;
             }
             .brand-title {
-                font-size: 1.7rem;
-            }
-            .admin-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .admin-form {
-                width: 100%;
-            }
-            .admin-input {
-                flex: 1;
+                font-size: 1.65rem;
             }
             .match-versus {
                 grid-template-columns: 1fr;
@@ -607,29 +582,14 @@
 <body>
 
 <div class="app-shell">
-    <!-- HEADER + DIREKTER ADMIN-LOGIN -->
+    <!-- HEADER MIT KOMPAKTEM ADMIN-BUTTON -->
     <header class="hero-header">
-        <div class="brand-row">
+        <div class="brand-group">
             <div class="brand-title">🎯 Dart Club <span class="accent">JJAGD</span></div>
-            <div class="season-pill">SAISON 2026 / 2027</div>
+            <div class="season-sub">Saison 2026 / 2027</div>
         </div>
 
-        <div class="admin-bar">
-            <div id="admin-status-text" class="admin-status">
-                👀 Zuschauer-Modus (Ergebnisse nur lesbar)
-            </div>
-
-            <!-- Login-Formular (wenn ausgeloggt) -->
-            <div id="admin-login-controls" class="admin-form">
-                <input type="password" id="admin-pass-input" class="admin-input" placeholder="Admin-Passwort (Jan)" onkeydown="if(event.key==='Enter') loginAdmin()">
-                <button class="btn btn-brass btn-sm" onclick="loginAdmin()">Admin Login</button>
-            </div>
-
-            <!-- Logout-Button (wenn Jan eingeloggt ist) -->
-            <div id="admin-logout-controls" class="admin-form" style="display: none;">
-                <button class="btn btn-red btn-sm" onclick="logoutAdmin()">Admin Abmelden</button>
-            </div>
-        </div>
+        <button id="admin-btn" class="admin-trigger" onclick="handleAdminButtonClick()">🔒 Admin</button>
     </header>
 
     <!-- NAVIGATION TABS -->
@@ -684,6 +644,19 @@
             <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="importBackupJSON(event)">
         </div>
     </main>
+</div>
+
+<!-- MODAL: ADMIN LOGIN -->
+<div id="login-modal" class="modal-backdrop">
+    <div class="modal-box" style="max-width: 340px;">
+        <div class="modal-header">Admin Login</div>
+        <div class="modal-sub">Passwort für Jan eingeben:</div>
+        <input type="password" id="admin-pass-input" class="modal-input" placeholder="Passwort" onkeydown="if(event.key==='Enter') submitAdminLogin()">
+        <div class="modal-footer">
+            <button class="btn btn-outline btn-sm" onclick="closeLoginModal()">Abbrechen</button>
+            <button class="btn btn-brass btn-sm" onclick="submitAdminLogin()">Login</button>
+        </div>
+    </div>
 </div>
 
 <!-- MODAL: ERGEBNIS EINTRAGEN (NUR ADMIN JAN) -->
@@ -834,44 +807,49 @@
         });
     }
 
-    // ADMIN LOGIN / LOGOUT
-    function loginAdmin() {
-        const input = document.getElementById("admin-pass-input");
-        if (input.value === ADMIN_PASSWORD) {
-            isAdmin = true;
-            input.value = "";
+    // ADMIN BUTTON & LOGIN MODAL
+    function handleAdminButtonClick() {
+        if (isAdmin) {
+            isAdmin = false;
             updateAdminUI();
             renderSchedule();
-            showToast("Willkommen Jan! Admin-Modus aktiviert.");
+            showToast("Admin-Modus beendet.");
         } else {
-            showToast("Falsches Admin-Passwort!");
+            const input = document.getElementById("admin-pass-input");
+            input.value = "";
+            document.getElementById("login-modal").classList.add("active");
+            setTimeout(() => input.focus(), 50);
         }
     }
 
-    function logoutAdmin() {
-        isAdmin = false;
-        updateAdminUI();
-        renderSchedule();
-        showToast("Admin-Modus beendet.");
+    function closeLoginModal() {
+        document.getElementById("login-modal").classList.remove("active");
+    }
+
+    function submitAdminLogin() {
+        const input = document.getElementById("admin-pass-input");
+        if (input.value === ADMIN_PASSWORD) {
+            isAdmin = true;
+            closeLoginModal();
+            updateAdminUI();
+            renderSchedule();
+            showToast("Willkommen Jan! Admin-Modus aktiv.");
+        } else {
+            showToast("Falsches Passwort!");
+        }
     }
 
     function updateAdminUI() {
-        const statusEl = document.getElementById("admin-status-text");
-        const loginControls = document.getElementById("admin-login-controls");
-        const logoutControls = document.getElementById("admin-logout-controls");
+        const btn = document.getElementById("admin-btn");
         const footerTools = document.getElementById("admin-tools-footer");
 
         if (isAdmin) {
-            statusEl.textContent = "👑 Eingeloggt als Jan (Admin – Ergebnisse bearbeitbar)";
-            statusEl.classList.add("active");
-            loginControls.style.display = "none";
-            logoutControls.style.display = "flex";
+            btn.textContent = "👑 Admin (Logout)";
+            btn.classList.add("logged-in");
             footerTools.classList.add("visible");
         } else {
-            statusEl.textContent = "👀 Zuschauer-Modus (Ergebnisse nur lesbar)";
-            statusEl.classList.remove("active");
-            loginControls.style.display = "flex";
-            logoutControls.style.display = "none";
+            btn.textContent = "🔒 Admin";
+            btn.classList.remove("logged-in");
             footerTools.classList.remove("visible");
         }
     }
