@@ -3,889 +3,997 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dart Club JJAGD</title>
-    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@500;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Dart Club JJAGD – Liga 2026/27</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f141c;
-            --card-bg: #1a2332;
-            --accent-green: #00e676;
-            --accent-red: #ff1744;
-            --text-light: #f0f4f8;
-            --text-dim: #94a3b8;
-            --gold: #ffd700;
+            --bg-main: #121417;
+            --bg-surface: #1b1f24;
+            --bg-elevated: #242930;
+            --dart-red: #c81e1e;
+            --dart-red-hover: #a51818;
+            --dart-green: #15803d;
+            --dart-green-light: #22c55e;
+            --brass: #d4af37;
+            --brass-hover: #b89528;
+            --sisal-cream: #f5efe6;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: #2f3640;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Roboto', sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-light);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
             min-height: 100vh;
-            padding: 10px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 600px;
-            background: var(--card-bg);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin: 0 auto;
-        }
-
-        h1, h2, h3 {
-            font-family: 'Teko', sans-serif;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        /* --- LOGIN PAGE --- */
-        #login-page {
-            text-align: center;
-        }
-
-        .logo-container {
-            margin-bottom: 20px;
-        }
-
-        .dart-logo {
-            width: 110px;
-            height: 110px;
-            background: radial-gradient(circle, #2a374e 0%, #111722 100%);
-            border: 4px solid var(--accent-green);
-            border-radius: 50%;
+            padding: 16px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            margin: 0 auto 15px auto;
-            box-shadow: 0 0 20px rgba(0, 230, 118, 0.3);
+            align-items: flex-start;
         }
 
-        .dart-logo svg {
-            width: 65px;
-            height: 65px;
-            fill: var(--accent-green);
-        }
-
-        .login-title {
-            font-size: 2.2rem;
-            color: var(--text-light);
-            line-height: 1;
-        }
-
-        .login-box {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 0.9rem;
-            color: var(--text-dim);
-        }
-
-        select, input[type="password"], input[type="number"] {
+        .app-shell {
             width: 100%;
-            padding: 14px;
-            background: #0f141c;
-            border: 1px solid #2a374e;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s;
+            max-width: 880px;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
         }
 
-        select:focus, input:focus {
-            border-color: var(--accent-green);
+        /* HEADER & ADMIN BAR */
+        .hero-header {
+            background: linear-gradient(135deg, #1b1f24 0%, #14171a 60%, #261414 100%);
+            padding: 24px 20px;
+            border-bottom: 2px solid var(--brass);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }
 
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--accent-green);
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            font-family: 'Teko', sans-serif;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-            touch-action: manipulation;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-danger {
-            background: var(--accent-red);
-            color: #fff;
-        }
-
-        .btn-secondary {
-            background: #2a374e;
-            color: #fff;
-        }
-
-        .btn-small {
-            padding: 8px 12px;
-            font-size: 0.9rem;
-            width: auto;
-        }
-
-        .error-msg {
-            color: var(--accent-red);
-            font-size: 0.85rem;
-            margin-top: 10px;
-            display: none;
-        }
-
-        /* --- DASHBOARD --- */
-        #main-page {
-            display: none;
-        }
-
-        .header {
+        .brand-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 12px;
-            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .user-info {
+        .brand-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--sisal-cream);
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .user-avatar {
-            width: 38px;
-            height: 38px;
-            background: var(--accent-green);
-            color: #000;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
+        .brand-title span.accent {
+            color: var(--brass);
         }
 
-        .logout-btn {
-            background: transparent;
-            border: 1px solid var(--text-dim);
-            color: var(--text-dim);
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
+        .season-pill {
+            background-color: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--brass);
+            color: var(--brass);
             font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
         }
 
-        /* Responsive Navigation Buttons */
-        .matchday-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            background: rgba(0,0,0,0.2);
-            padding: 8px;
-            border-radius: 8px;
-        }
-
-        .nav-btn {
-            background: #2a374e;
-            color: white;
-            border: none;
-            padding: 10px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: 'Teko', sans-serif;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 44px;
-        }
-
-        .nav-text-long {
-            display: inline;
-        }
-
-        @media (max-width: 480px) {
-            .nav-text-long {
-                display: none;
-            }
-            .nav-btn {
-                padding: 10px 16px;
-                font-size: 1.3rem;
-            }
-        }
-
-        .matchday-title {
-            font-size: 1.4rem;
-            text-align: center;
-        }
-
-        .matchday-date {
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            display: block;
-            text-align: center;
-        }
-
-        .match-card {
-            background: #111722;
+        /* ADMIN LOGIN BAR ON MAIN PAGE */
+        .admin-bar {
+            background-color: rgba(0, 0, 0, 0.35);
+            border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 14px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .match-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            margin-bottom: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            padding-bottom: 4px;
-        }
-
-        .match-body {
+            padding: 10px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
-        .player-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            width: 35%;
+        .admin-status {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .player-name.right {
-            text-align: right;
+        .admin-status.active {
+            color: var(--dart-green-light);
+            font-weight: 600;
         }
 
-        .match-score {
-            font-family: 'Teko', sans-serif;
-            font-size: 1.4rem;
-            background: #0f141c;
-            padding: 4px 10px;
-            border-radius: 6px;
-            border: 1px solid #2a374e;
-            text-align: center;
+        .admin-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
-        .status-badge {
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-        .status-open { background: #334155; color: #94a3b8; }
-        .status-pending { background: #854d0e; color: #fef08a; }
-        .status-confirmed { background: #166534; color: #bbf7d0; }
-
-        /* --- TABELLE OPTIMIERUNG --- */
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin-top: 15px;
+        .admin-input {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 8px 12px;
             border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
+            min-height: 40px;
+            outline: none;
+        }
+
+        .admin-input:focus {
+            border-color: var(--brass);
+        }
+
+        /* BUTTONS */
+        .btn {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 10px 16px;
+            min-height: 44px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-sm {
+            min-height: 38px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+        }
+
+        .btn-brass {
+            background-color: var(--brass);
+            color: #121417;
+        }
+
+        .btn-brass:hover {
+            background-color: var(--brass-hover);
+        }
+
+        .btn-red {
+            background-color: var(--dart-red);
+            color: #fff;
+        }
+
+        .btn-red:hover {
+            background-color: var(--dart-red-hover);
+        }
+
+        .btn-green {
+            background-color: var(--dart-green);
+            color: #fff;
+        }
+
+        .btn-green:hover {
+            background-color: #166534;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--brass);
+            color: var(--brass);
+        }
+
+        /* TABS */
+        .nav-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background-color: var(--bg-main);
+            padding: 6px;
+            margin: 18px 20px 0;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            gap: 6px;
+        }
+
+        .tab-btn {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.05rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background-color: var(--dart-red);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(200, 30, 30, 0.35);
+        }
+
+        .content-body {
+            padding: 20px;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* TABLE */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid var(--border);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        th, td {
-            padding: 12px 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.9rem;
+            min-width: 480px;
         }
 
         th {
-            background: #111722;
-            color: var(--text-dim);
-            font-family: 'Teko', sans-serif;
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-size: 0.85rem;
+            background-color: var(--bg-elevated);
+            color: var(--brass);
+            padding: 14px 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
         }
 
         tr:nth-child(even) {
-            background: rgba(255,255,255,0.01);
+            background-color: rgba(255, 255, 255, 0.015);
         }
 
-        .rank-1 { color: var(--gold); font-weight: bold; }
-
-        /* --- MODAL --- */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 15px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.85rem;
+            background-color: var(--bg-elevated);
+            color: var(--text-main);
         }
 
-        .modal-content {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid var(--accent-green);
+        .rank-1 {
+            background-color: var(--brass);
+            color: #121417;
         }
 
-        .legs-input-group {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            gap: 10px;
+        .points-cell {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.15rem;
+            color: var(--dart-green-light);
+            font-weight: 700;
         }
-        .legs-input-group input {
-            width: 70px;
+
+        .scoring-legend {
+            margin-top: 12px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
             text-align: center;
         }
 
-        .current-badge {
-            background: var(--accent-green);
-            color: #000;
-            font-size: 0.65rem;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 5px;
-            vertical-align: middle;
+        /* SCHEDULE & SPIELFREI BANNER */
+        .matchday-controls {
+            margin-bottom: 18px;
+        }
+
+        .matchday-controls label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .matchday-select {
+            width: 100%;
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border);
+            color: var(--sisal-cream);
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            min-height: 48px;
+            outline: none;
+        }
+
+        .matchday-select:focus {
+            border-color: var(--brass);
+        }
+
+        .bye-banner {
+            background: linear-gradient(90deg, rgba(21, 128, 61, 0.22) 0%, rgba(212, 175, 55, 0.15) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.45);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.15rem;
+            letter-spacing: 0.5px;
+            color: var(--sisal-cream);
+            text-transform: uppercase;
+        }
+
+        .bye-banner .palm {
+            font-size: 1.4rem;
+        }
+
+        .match-card {
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .match-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .status-tag {
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-open {
+            background-color: rgba(212, 175, 55, 0.18);
+            color: var(--brass);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+        }
+
+        .tag-done {
+            background-color: rgba(34, 197, 94, 0.18);
+            color: var(--dart-green-light);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .match-versus {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 12px;
+            text-align: center;
+        }
+
+        .player-name {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--sisal-cream);
+            letter-spacing: 0.5px;
+        }
+
+        .score-box {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            color: var(--brass);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 120px;
+        }
+
+        .match-actions {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* ADMIN TOOLS FOOTER */
+        .admin-footer {
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+            display: none;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .admin-footer.visible {
+            display: flex;
+        }
+
+        /* MODAL */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.82);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .modal-backdrop.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--brass);
+            border-radius: 14px;
+            padding: 24px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+        }
+
+        .modal-header {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.4rem;
+            color: var(--brass);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .modal-sub {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+
+        .leg-group {
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 14px;
+        }
+
+        .leg-group-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--brass);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .leg-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .leg-inputs label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            color: var(--sisal-cream);
+        }
+
+        .leg-inputs input {
+            width: 100%;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-align: center;
+            min-height: 46px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--brass);
+            color: var(--sisal-cream);
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            transition: transform 0.25s ease;
+            z-index: 2000;
+            text-align: center;
+            max-width: 90vw;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width: 540px) {
+            body {
+                padding: 8px;
+            }
+            .brand-title {
+                font-size: 1.7rem;
+            }
+            .admin-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .admin-form {
+                width: 100%;
+            }
+            .admin-input {
+                flex: 1;
+            }
+            .match-versus {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .score-box {
+                margin: 0 auto;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- LOGIN SEITE -->
-    <div id="login-page">
-        <div class="logo-container">
-            <div class="dart-logo">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10Z"/>
-                </svg>
-            </div>
-            <h1 class="login-title">DART CLUB JJAGD</h1>
-            <p style="color: var(--text-dim); font-size: 0.9rem;">Saison 2026 / 2027</p>
+<div class="app-shell">
+    <!-- HEADER + DIREKTER ADMIN-LOGIN -->
+    <header class="hero-header">
+        <div class="brand-row">
+            <div class="brand-title">🎯 Dart Club <span class="accent">JJAGD</span></div>
+            <div class="season-pill">SAISON 2026 / 2027</div>
         </div>
 
-        <div class="login-box">
-            <div class="form-group">
-                <label for="player-select">Spieler auswählen</label>
-                <select id="player-select">
-                    <option value="" disabled selected>-- Name wählen --</option>
-                    <option value="Adrian">Adrian</option>
-                    <option value="Jeff">Jeff</option>
-                    <option value="Dennis">Dennis</option>
-                    <option value="Achim">Achim</option>
-                    <option value="Jan">Jan</option>
-                </select>
+        <div class="admin-bar">
+            <div id="admin-status-text" class="admin-status">
+                👀 Zuschauer-Modus (Ergebnisse nur lesbar)
             </div>
 
-            <div class="form-group">
-                <label for="password-input">Passwort</label>
-                <input type="password" id="password-input" placeholder="Passwort eingeben">
+            <!-- Login-Formular (wenn ausgeloggt) -->
+            <div id="admin-login-controls" class="admin-form">
+                <input type="password" id="admin-pass-input" class="admin-input" placeholder="Admin-Passwort (Jan)" onkeydown="if(event.key==='Enter') loginAdmin()">
+                <button class="btn btn-brass btn-sm" onclick="loginAdmin()">Admin Login</button>
             </div>
 
-            <button class="btn" onclick="login()">ANMELDEN</button>
-            <div id="login-error" class="error-msg">Falsches Passwort oder kein Spieler gewählt!</div>
+            <!-- Logout-Button (wenn Jan eingeloggt ist) -->
+            <div id="admin-logout-controls" class="admin-form" style="display: none;">
+                <button class="btn btn-red btn-sm" onclick="logoutAdmin()">Admin Abmelden</button>
+            </div>
         </div>
+    </header>
+
+    <!-- NAVIGATION TABS -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" id="btn-tab-schedule" onclick="switchTab('schedule')">📅 Spielplan</button>
+        <button class="tab-btn" id="btn-tab-table" onclick="switchTab('table')">🏆 Tabelle</button>
     </div>
 
-    <!-- MAIN DASHBOARD -->
-    <div id="main-page">
-        <div class="header">
-            <div class="user-info">
-                <div class="user-avatar" id="user-avatar">?</div>
+    <main class="content-body">
+        <!-- TAB: SPIELPLAN -->
+        <section id="pane-schedule" class="tab-pane active">
+            <div class="matchday-controls">
+                <label for="matchday-select">Spieltag auswählen:</label>
+                <select id="matchday-select" class="matchday-select" onchange="renderSchedule()"></select>
+            </div>
+
+            <!-- SPIELFREI BANNER OBEN -->
+            <div id="bye-banner-container"></div>
+
+            <!-- PARTIEN -->
+            <div id="matches-container"></div>
+        </section>
+
+        <!-- TAB: TABELLE -->
+        <section id="pane-table" class="tab-pane">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Platz</th>
+                            <th style="text-align: left;">Spieler</th>
+                            <th>Spiele</th>
+                            <th>Siege</th>
+                            <th>Nied.</th>
+                            <th>Legs</th>
+                            <th>Punkte</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+            <div class="scoring-legend">
+                Wertung: 1 Punkt pro gewonnenem Leg + 1 Bonuspunkt für den Matchsieg (bei 5 Legs).
+            </div>
+        </section>
+
+        <!-- ADMIN BACKUP & EXPORT (NUR SICHTBAR FÜR JAN) -->
+        <div id="admin-tools-footer" class="admin-footer">
+            <button class="btn btn-outline btn-sm" onclick="exportBackupJSON()">💾 Backup speichern (JSON)</button>
+            <button class="btn btn-outline btn-sm" onclick="document.getElementById('import-file-input').click()">📂 Backup laden</button>
+            <button class="btn btn-outline btn-sm" onclick="exportTableCSV()">📊 Tabelle als CSV</button>
+            <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="importBackupJSON(event)">
+        </div>
+    </main>
+</div>
+
+<!-- MODAL: ERGEBNIS EINTRAGEN (NUR ADMIN JAN) -->
+<div id="result-modal" class="modal-backdrop">
+    <div class="modal-box">
+        <div class="modal-header">Ergebnis eintragen</div>
+        <div class="modal-sub" id="modal-match-label">Spieler 1 vs. Spieler 2</div>
+
+        <div class="leg-group">
+            <div class="leg-group-title">Match 1 (First to 5 Legs)</div>
+            <div class="leg-inputs">
                 <div>
-                    <strong id="user-display-name">Spieler</strong>
-                    <span style="display:block; font-size:0.75rem; color:var(--text-dim);" id="admin-indicator">Mitglied</span>
+                    <label id="lbl-m1-p1">Spieler 1</label>
+                    <input type="number" id="inp-m1-p1" min="0" max="5">
+                </div>
+                <div>
+                    <label id="lbl-m1-p2">Spieler 2</label>
+                    <input type="number" id="inp-m1-p2" min="0" max="5">
                 </div>
             </div>
-            <div style="display:flex; gap:5px;">
-                <button class="logout-btn" id="btn-admin-pw" style="display:none; border-color:var(--gold); color:var(--gold);" onclick="openAdminModal()">🔑 Admin</button>
-                <button class="logout-btn" onclick="logout()">Abmelden</button>
+        </div>
+
+        <div class="leg-group">
+            <div class="leg-group-title">Match 2 (First to 5 Legs)</div>
+            <div class="leg-inputs">
+                <div>
+                    <label id="lbl-m2-p1">Spieler 1</label>
+                    <input type="number" id="inp-m2-p1" min="0" max="5">
+                </div>
+                <div>
+                    <label id="lbl-m2-p2">Spieler 2</label>
+                    <input type="number" id="inp-m2-p2" min="0" max="5">
+                </div>
             </div>
         </div>
 
-        <!-- SPIELTAG NAVIGATION -->
-        <div class="matchday-nav">
-            <button class="nav-btn" onclick="changeMatchday(-1)">◀ <span class="nav-text-long">&nbsp;Vorheriger</span></button>
-            <div>
-                <div class="matchday-title" id="matchday-title">Spieltag 1</div>
-                <span class="matchday-date" id="matchday-date">13.11.2026 - 26.11.2026</span>
-            </div>
-            <button class="nav-btn" onclick="changeMatchday(1)"><span class="nav-text-long">Nächster&nbsp;</span> ▶</button>
-        </div>
-
-        <!-- MATCHES DES SPIELTAGS -->
-        <div id="matches-container"></div>
-
-        <!-- TABELLE -->
-        <h2 style="margin-top: 25px; margin-bottom: 5px;">LIGA TABELLE</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Spieler</th>
-                        <th>Spiele</th>
-                        <th>Legs</th>
-                        <th>Diff.</th>
-                        <th>Punkte</th>
-                    </tr>
-                </thead>
-                <tbody id="standings-table-body"></tbody>
-            </table>
-        </div>
-
-        <!-- DATEN BACKUP / EXPORT SECTION -->
-        <div style="margin-top:25px; padding:15px; background:rgba(0,0,0,0.3); border-radius:8px; text-align:center;">
-            <span style="font-size:0.8rem; color:var(--text-dim); display:block; margin-bottom:10px;">Daten-Sicherung (Excel / JSON Backup)</span>
-            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-                <button class="btn btn-secondary btn-small" onclick="exportJSON()">💾 Backup (JSON)</button>
-                <button class="btn btn-secondary btn-small" onclick="document.getElementById('import-file').click()">📂 Importieren</button>
-                <button class="btn btn-secondary btn-small" onclick="exportCSV()">📊 Excel Export</button>
-                <input type="file" id="import-file" style="display:none" accept=".json" onchange="importJSON(event)">
-            </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeResultModal()">Abbrechen</button>
+            <button class="btn btn-green" onclick="saveMatchResult()">Speichern</button>
         </div>
     </div>
 </div>
 
-<!-- MODAL: RESULT ENTRY / CONFIRMATION -->
-<div id="match-modal" class="modal">
-    <div class="modal-content">
-        <h2 id="modal-title" style="margin-bottom: 15px; text-align:center;">Ergebnis eintragen</h2>
-        <div id="modal-body"></div>
-    </div>
-</div>
-
-<!-- MODAL: CHANGE PASSWORD -->
-<div id="pw-change-modal" class="modal">
-    <div class="modal-content">
-        <h2 style="margin-bottom: 10px; text-align:center;">Neues Passwort festlegen</h2>
-        <p style="font-size:0.85rem; color:var(--text-dim); margin-bottom:15px; text-align:center;">
-            Du meldest dich zum ersten Mal an. Bitte vergib ein individuelles Passwort.
-        </p>
-        <div class="form-group">
-            <input type="password" id="new-password-1" placeholder="Neues Passwort">
-        </div>
-        <div class="form-group">
-            <input type="password" id="new-password-2" placeholder="Passwort wiederholen">
-        </div>
-        <button class="btn" onclick="saveNewPassword()">Speichern & Fortfahren</button>
-        <div id="pw-error" class="error-msg"></div>
-    </div>
-</div>
-
-<!-- MODAL: ADMIN PASSWORD RESET -->
-<div id="admin-modal" class="modal">
-    <div class="modal-content">
-        <h2 style="margin-bottom: 15px; text-align:center; color:var(--gold);">Passwort-Verwaltung (Admin)</h2>
-        <div id="admin-player-list"></div>
-        <button class="btn btn-secondary" style="margin-top:15px;" onclick="closeAdminModal()">Schließen</button>
-    </div>
-</div>
+<div id="toast" class="toast"></div>
 
 <script>
     const PLAYERS = ["Adrian", "Jeff", "Dennis", "Achim", "Jan"];
-    const MASTER_PW = "Liga2026";
-    const SEASON_START_DATE = new Date(2026, 10, 13); // 13. November 2026
+    const START_DATE = new Date("2026-11-13T00:00:00");
+    const ADMIN_PASSWORD = "Lembeck91";
+    const STORAGE_KEY = "dart_club_jjagd_v3";
 
-    const SCHEDULE = [
-        { round: 1, matches: [ {p1: "Jan", p2: "Dennis"}, {p1: "Achim", p2: "Adrian"} ], bye: "Jeff" },
-        { round: 2, matches: [ {p1: "Jeff", p2: "Jan"}, {p1: "Dennis", p2: "Achim"} ], bye: "Adrian" },
-        { round: 3, matches: [ {p1: "Adrian", p2: "Jeff"}, {p1: "Jan", p2: "Achim"} ], bye: "Dennis" },
-        { round: 4, matches: [ {p1: "Dennis", p2: "Adrian"}, {p1: "Achim", p2: "Jeff"} ], bye: "Jan" },
-        { round: 5, matches: [ {p1: "Jeff", p2: "Dennis"}, {p1: "Adrian", p2: "Jan"} ], bye: "Achim" },
-        { round: 6, matches: [ {p1: "Dennis", p2: "Jan"}, {p1: "Adrian", p2: "Achim"} ], bye: "Jeff" },
-        { round: 7, matches: [ {p1: "Jan", p2: "Jeff"}, {p1: "Achim", p2: "Dennis"} ], bye: "Adrian" },
-        { round: 8, matches: [ {p1: "Jeff", p2: "Adrian"}, {p1: "Achim", p2: "Jan"} ], bye: "Dennis" },
-        { round: 9, matches: [ {p1: "Adrian", p2: "Dennis"}, {p1: "Jeff", p2: "Achim"} ], bye: "Jan" },
-        { round: 10, matches: [ {p1: "Dennis", p2: "Jeff"}, {p1: "Jan", p2: "Adrian"} ], bye: "Achim" }
-    ];
+    let isAdmin = false;
+    let schedule = [];
+    let editingMatchId = null;
 
-    let currentUser = null;
-    let currentMatchday = 1;
-    let appData = {
-        passwords: {},
-        isDefaultPassword: {},
-        matches: {}
+    window.onload = function() {
+        loadSchedule();
+        populateMatchdayDropdown();
+        selectCurrentMatchdayByDate();
+        renderSchedule();
+        renderTable();
     };
 
-    function initData() {
-        const stored = localStorage.getItem('dart_club_jjagd_data');
-        if (stored) {
-            appData = JSON.parse(stored);
-            // Für ältere Backups sicherstellen, dass isDefaultPassword existiert
-            PLAYERS.forEach(p => {
-                if (!appData.passwords[p]) appData.passwords[p] = MASTER_PW;
-                if (appData.isDefaultPassword[p] === undefined) {
-                    appData.isDefaultPassword[p] = (appData.passwords[p] === MASTER_PW);
-                }
+    function showToast(msg) {
+        const toast = document.getElementById("toast");
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    function loadSchedule() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            try {
+                schedule = JSON.parse(saved);
+                return;
+            } catch (e) {
+                console.error("Fehler beim Laden der Daten:", e);
+            }
+        }
+        createInitialSchedule();
+        saveSchedule();
+    }
+
+    function saveSchedule() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(schedule));
+    }
+
+    function createInitialSchedule() {
+        const rounds = [
+            // 1. Spieltag
+            [
+                { p1: "Jan", p2: "Dennis" },
+                { p1: "Achim", p2: "Adrian" },
+                { p1: "Jeff", p2: null }
+            ],
+            // 2. Spieltag
+            [
+                { p1: "Adrian", p2: "Jan" },
+                { p1: "Dennis", p2: "Jeff" },
+                { p1: "Achim", p2: null }
+            ],
+            // 3. Spieltag
+            [
+                { p1: "Jeff", p2: "Adrian" },
+                { p1: "Jan", p2: "Achim" },
+                { p1: "Dennis", p2: null }
+            ],
+            // 4. Spieltag
+            [
+                { p1: "Achim", p2: "Jeff" },
+                { p1: "Adrian", p2: "Dennis" },
+                { p1: "Jan", p2: null }
+            ],
+            // 5. Spieltag
+            [
+                { p1: "Dennis", p2: "Achim" },
+                { p1: "Jeff", p2: "Jan" },
+                { p1: "Adrian", p2: null }
+            ]
+        ];
+
+        schedule = [];
+        let idCounter = 1;
+
+        rounds.forEach((roundMatches, idx) => {
+            const start = new Date(START_DATE);
+            start.setDate(START_DATE.getDate() + idx * 14);
+            const end = new Date(start);
+            end.setDate(start.getDate() + 13);
+
+            const period = `${start.toLocaleDateString("de-DE")} – ${end.toLocaleDateString("de-DE")}`;
+
+            roundMatches.forEach(pair => {
+                schedule.push({
+                    id: idCounter++,
+                    matchday: idx + 1,
+                    period: period,
+                    p1: pair.p1,
+                    p2: pair.p2,
+                    m1_p1: null,
+                    m1_p2: null,
+                    m2_p1: null,
+                    m2_p2: null,
+                    completed: false
+                });
             });
+        });
+    }
+
+    // ADMIN LOGIN / LOGOUT
+    function loginAdmin() {
+        const input = document.getElementById("admin-pass-input");
+        if (input.value === ADMIN_PASSWORD) {
+            isAdmin = true;
+            input.value = "";
+            updateAdminUI();
+            renderSchedule();
+            showToast("Willkommen Jan! Admin-Modus aktiviert.");
         } else {
-            PLAYERS.forEach(p => {
-                appData.passwords[p] = MASTER_PW;
-                appData.isDefaultPassword[p] = true;
-            });
-            saveData();
+            showToast("Falsches Admin-Passwort!");
         }
     }
 
-    function saveData() {
-        localStorage.setItem('dart_club_jjagd_data', JSON.stringify(appData));
+    function logoutAdmin() {
+        isAdmin = false;
+        updateAdminUI();
+        renderSchedule();
+        showToast("Admin-Modus beendet.");
     }
 
-    function getMatchdayDates(roundNumber) {
-        let start = new Date(SEASON_START_DATE);
-        start.setDate(start.getDate() + (roundNumber - 1) * 14);
-        let end = new Date(start);
-        end.setDate(end.getDate() + 13);
+    function updateAdminUI() {
+        const statusEl = document.getElementById("admin-status-text");
+        const loginControls = document.getElementById("admin-login-controls");
+        const logoutControls = document.getElementById("admin-logout-controls");
+        const footerTools = document.getElementById("admin-tools-footer");
 
-        const formatDate = (d) => `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
-        return { start, end, text: `${formatDate(start)} - ${formatDate(end)}` };
+        if (isAdmin) {
+            statusEl.textContent = "👑 Eingeloggt als Jan (Admin – Ergebnisse bearbeitbar)";
+            statusEl.classList.add("active");
+            loginControls.style.display = "none";
+            logoutControls.style.display = "flex";
+            footerTools.classList.add("visible");
+        } else {
+            statusEl.textContent = "👀 Zuschauer-Modus (Ergebnisse nur lesbar)";
+            statusEl.classList.remove("active");
+            loginControls.style.display = "flex";
+            logoutControls.style.display = "none";
+            footerTools.classList.remove("visible");
+        }
     }
 
-    function getCurrentMatchdayByDate() {
+    // SPIELTAG AUSWAHL & DATUMSAUTOMATIK
+    function populateMatchdayDropdown() {
+        const select = document.getElementById("matchday-select");
+        select.innerHTML = "";
+        for (let day = 1; day <= 5; day++) {
+            const sample = schedule.find(m => m.matchday === day);
+            const opt = document.createElement("option");
+            opt.value = day;
+            opt.textContent = `${day}. Spieltag (${sample ? sample.period : ""})`;
+            select.appendChild(opt);
+        }
+    }
+
+    function selectCurrentMatchdayByDate() {
         const now = new Date();
-        for (let i = 1; i <= SCHEDULE.length; i++) {
-            const { start, end } = getMatchdayDates(i);
-            if (now >= start && now <= end) return i;
-        }
-        return 1;
-    }
+        let activeDay = 1;
 
-    function login() {
-        const player = document.getElementById('player-select').value;
-        const pw = document.getElementById('password-input').value;
-        const err = document.getElementById('login-error');
+        for (let i = 0; i < 5; i++) {
+            const start = new Date(START_DATE);
+            start.setDate(START_DATE.getDate() + i * 14);
+            const end = new Date(start);
+            end.setDate(start.getDate() + 13);
+            end.setHours(23, 59, 59, 999);
 
-        if (!player || !pw) {
-            err.style.display = 'block';
-            err.innerText = "Bitte wähle deinen Namen und gib ein Passwort ein.";
-            return;
-        }
-
-        const storedPw = appData.passwords[player];
-        const mustChangePw = appData.isDefaultPassword[player];
-
-        if (pw === storedPw) {
-            currentUser = player;
-            err.style.display = 'none';
-            document.getElementById('password-input').value = '';
-
-            // Nur wenn es noch das Standard-Passwort ist, muss ein neues vergeben werden
-            if (mustChangePw) {
-                document.getElementById('pw-change-modal').style.display = 'flex';
-            } else {
-                startDashboard();
+            if (now >= start && now <= end) {
+                activeDay = i + 1;
+                break;
+            } else if (now > end) {
+                activeDay = Math.min(i + 2, 5);
             }
-        } else {
-            err.style.display = 'block';
-            err.innerText = "Falsches Passwort!";
         }
+        document.getElementById("matchday-select").value = activeDay;
     }
 
-    function saveNewPassword() {
-        const p1 = document.getElementById('new-password-1').value;
-        const p2 = document.getElementById('new-password-2').value;
-        const err = document.getElementById('pw-error');
+    // RENDER SPIELPLAN
+    function renderSchedule() {
+        const selectedDay = parseInt(document.getElementById("matchday-select").value, 10);
+        const dayItems = schedule.filter(m => m.matchday === selectedDay);
 
-        if (!p1 || p1.length < 4) {
-            err.style.display = 'block';
-            err.innerText = "Das Passwort muss mindestens 4 Zeichen lang sein.";
-            return;
-        }
-        if (p1 !== p2) {
-            err.style.display = 'block';
-            err.innerText = "Die Passwörter stimmen nicht überein.";
-            return;
-        }
+        const byeContainer = document.getElementById("bye-banner-container");
+        const matchesContainer = document.getElementById("matches-container");
 
-        appData.passwords[currentUser] = p1;
-        appData.isDefaultPassword[currentUser] = false; // Ab jetzt kein Standardpasswort mehr!
-        saveData();
-        document.getElementById('pw-change-modal').style.display = 'none';
-        startDashboard();
-    }
+        byeContainer.innerHTML = "";
+        matchesContainer.innerHTML = "";
 
-    function startDashboard() {
-        document.getElementById('login-page').style.display = 'none';
-        document.getElementById('main-page').style.display = 'block';
-
-        document.getElementById('user-display-name').innerText = currentUser;
-        document.getElementById('user-avatar').innerText = currentUser.charAt(0);
-        document.getElementById('admin-indicator').innerText = currentUser === 'Jan' ? 'Administrator' : 'Mitglied';
-        
-        if (currentUser === 'Jan') {
-            document.getElementById('btn-admin-pw').style.display = 'inline-block';
+        // 1. Spielfreien Spieler ganz oben anzeigen
+        const byeItem = dayItems.find(m => m.p2 === null);
+        if (byeItem) {
+            byeContainer.innerHTML = `
+                <div class="bye-banner">
+                    <span class="palm">🌴</span>
+                    <span>${byeItem.p1} spielfrei</span>
+                </div>
+            `;
         }
 
-        currentMatchday = getCurrentMatchdayByDate();
-        renderDashboard();
-    }
+        // 2. Reguläre Partien darunter anzeigen
+        const activeMatches = dayItems.filter(m => m.p2 !== null);
+        activeMatches.forEach(m => {
+            const card = document.createElement("div");
+            card.className = "match-card";
 
-    function logout() {
-        currentUser = null;
-        document.getElementById('main-page').style.display = 'none';
-        document.getElementById('login-page').style.display = 'block';
-    }
+            const badge = m.completed
+                ? `<span class="status-tag tag-done">Gespielt</span>`
+                : `<span class="status-tag tag-open">Offen</span>`;
 
-    function changeMatchday(delta) {
-        currentMatchday += delta;
-        if (currentMatchday < 1) currentMatchday = 1;
-        if (currentMatchday > SCHEDULE.length) currentMatchday = SCHEDULE.length;
-        renderDashboard();
-    }
+            const scoreHtml = m.completed
+                ? `<div>Match 1: <strong>${m.m1_p1} : ${m.m1_p2}</strong></div>
+                   <div>Match 2: <strong>${m.m2_p1} : ${m.m2_p2}</strong></div>`
+                : `<div style="color: var(--text-muted); font-size: 0.9rem;">VS</div>`;
 
-    function renderDashboard() {
-        const dates = getMatchdayDates(currentMatchday);
-        const actualMatchday = getCurrentMatchdayByDate();
-        const isCurrentBadge = (currentMatchday === actualMatchday) ? `<span class="current-badge">AKTUELL</span>` : '';
-
-        document.getElementById('matchday-title').innerHTML = `Spieltag ${currentMatchday} ${isCurrentBadge}`;
-        document.getElementById('matchday-date').innerText = dates.text;
-
-        const container = document.getElementById('matches-container');
-        container.innerHTML = '';
-
-        const roundData = SCHEDULE[currentMatchday - 1];
-
-        const byeCard = document.createElement('div');
-        byeCard.className = 'match-card';
-        byeCard.style.opacity = '0.6';
-        byeCard.innerHTML = `<div style="text-align:center; font-size:0.9rem; color:var(--text-dim);">🌴 <strong>${roundData.bye}</strong> hat an diesem Spieltag spielfrei.</div>`;
-        container.appendChild(byeCard);
-
-        roundData.matches.forEach((m, idx) => {
-            const matchKey = `R${currentMatchday}_M${idx}`;
-            const matchState = appData.matches[matchKey] || { status: 'OPEN' };
-            const card = document.createElement('div');
-            card.className = 'match-card';
-
-            let statusBadge = `<span class="status-badge status-open">Offen</span>`;
-            let scoreDisplay = `vs`;
-            let actionBtn = '';
-
-            if (matchState.status === 'CONFIRMED') {
-                statusBadge = `<span class="status-badge status-confirmed">Bestätigt</span>`;
-                scoreDisplay = `M1: ${matchState.m1_p1}:${matchState.m1_p2} | M2: ${matchState.m2_p1}:${matchState.m2_p2}`;
-            } else if (matchState.status === 'PENDING') {
-                statusBadge = `<span class="status-badge status-pending">Bestätigung ausstehend</span>`;
-                scoreDisplay = `M1: ${matchState.m1_p1}:${matchState.m1_p2} | M2: ${matchState.m2_p1}:${matchState.m2_p2}`;
-            }
-
-            const isParticipant = (currentUser === m.p1 || currentUser === m.p2);
-
-            if (isParticipant) {
-                if (matchState.status === 'OPEN') {
-                    actionBtn = `<button class="btn btn-small" style="margin-top:10px;" onclick="openResultModal('${matchKey}', '${m.p1}', '${m.p2}')">Ergebnis eintragen</button>`;
-                } else if (matchState.status === 'PENDING') {
-                    if (matchState.submittedBy !== currentUser) {
-                        actionBtn = `<button class="btn btn-small" style="margin-top:10px; background:var(--gold); color:#000;" onclick="openConfirmModal('${matchKey}')">Ergebnis prüfen & bestätigen</button>`;
-                    } else {
-                        actionBtn = `<div style="font-size:0.75rem; color:var(--text-dim); margin-top:8px;">Warte auf Bestätigung von ${m.p1 === currentUser ? m.p2 : m.p1}...</div>`;
-                    }
-                } else if (matchState.status === 'CONFIRMED') {
-                    actionBtn = `<button class="btn btn-secondary btn-small" style="margin-top:10px;" onclick="openResultModal('${matchKey}', '${m.p1}', '${m.p2}', true)">Ergebnis korrigieren</button>`;
-                }
-            }
+            const adminBtnHtml = isAdmin
+                ? `<div class="match-actions">
+                       <button class="btn ${m.completed ? 'btn-outline' : 'btn-brass'} btn-sm" onclick="openResultModal(${m.id})">
+                           ${m.completed ? '✏️ Ergebnis bearbeiten' : '➕ Ergebnis eintragen'}
+                       </button>
+                   </div>`
+                : "";
 
             card.innerHTML = `
-                <div class="match-header">
-                    <span>Partie ${idx + 1}</span>
-                    ${statusBadge}
+                <div class="match-meta">
+                    <span>Zeitraum: ${m.period}</span>
+                    ${badge}
                 </div>
-                <div class="match-body">
+                <div class="match-versus">
                     <div class="player-name">${m.p1}</div>
-                    <div class="match-score">${scoreDisplay}</div>
-                    <div class="player-name right">${m.p2}</div>
+                    <div class="score-box">${scoreHtml}</div>
+                    <div class="player-name">${m.p2}</div>
                 </div>
-                ${actionBtn}
+                ${adminBtnHtml}
             `;
-            container.appendChild(card);
+            matchesContainer.appendChild(card);
         });
-
-        renderStandings();
     }
 
-    function openResultModal(matchKey, p1, p2, isCorrection = false) {
-        const modal = document.getElementById('match-modal');
-        const title = document.getElementById('modal-title');
-        const body = document.getElementById('modal-body');
-
-        title.innerText = isCorrection ? "Ergebnis korrigieren" : "Ergebnis eintragen";
-        const existing = appData.matches[matchKey] || {};
-
-        body.innerHTML = `
-            <p style="text-align:center; margin-bottom:15px; font-size:0.9rem; color:var(--text-dim);">
-                Partie: <strong>${p1}</strong> vs <strong>${p2}</strong>
-            </p>
-            <div style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; margin-bottom:10px;">
-                <strong style="color:var(--accent-green); display:block; margin-bottom:5px;">Match 1 (bis 5 Legs)</strong>
-                <div class="legs-input-group">
-                    <label>${p1}:</label>
-                    <input type="number" id="m1-p1" min="0" max="5" value="${existing.m1_p1 ?? 0}">
-                </div>
-                <div class="legs-input-group">
-                    <label>${p2}:</label>
-                    <input type="number" id="m1-p2" min="0" max="5" value="${existing.m1_p2 ?? 0}">
-                </div>
-            </div>
-
-            <div style="background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; margin-bottom:15px;">
-                <strong style="color:var(--accent-green); display:block; margin-bottom:5px;">Match 2 (bis 5 Legs)</strong>
-                <div class="legs-input-group">
-                    <label>${p1}:</label>
-                    <input type="number" id="m2-p1" min="0" max="5" value="${existing.m2_p1 ?? 0}">
-                </div>
-                <div class="legs-input-group">
-                    <label>${p2}:</label>
-                    <input type="number" id="m2-p2" min="0" max="5" value="${existing.m2_p2 ?? 0}">
-                </div>
-            </div>
-
-            <button class="btn" onclick="submitResult('${matchKey}', '${p1}', '${p2}')">Eintragen / Zur Bestätigung senden</button>
-            <button class="btn btn-secondary" style="margin-top:8px;" onclick="closeModal()">Abbrechen</button>
-        `;
-        modal.style.display = 'flex';
-    }
-
-    function submitResult(matchKey, p1, p2) {
-        const m1_p1 = parseInt(document.getElementById('m1-p1').value) || 0;
-        const m1_p2 = parseInt(document.getElementById('m1-p2').value) || 0;
-        const m2_p1 = parseInt(document.getElementById('m2-p1').value) || 0;
-        const m2_p2 = parseInt(document.getElementById('m2-p2').value) || 0;
-
-        appData.matches[matchKey] = {
-            p1, p2,
-            m1_p1, m1_p2,
-            m2_p1, m2_p2,
-            submittedBy: currentUser,
-            status: 'PENDING'
-        };
-
-        saveData();
-        closeModal();
-        renderDashboard();
-    }
-
-    function openConfirmModal(matchKey) {
-        const modal = document.getElementById('match-modal');
-        const title = document.getElementById('modal-title');
-        const body = document.getElementById('modal-body');
-
-        const m = appData.matches[matchKey];
-        title.innerText = "Ergebnis bestätigen";
-
-        body.innerHTML = `
-            <p style="text-align:center; font-size:0.9rem; color:var(--text-dim); margin-bottom:15px;">
-                Eingetragen von: <strong>${m.submittedBy}</strong>
-            </p>
-            <div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:8px; margin-bottom:15px;">
-                <p><strong>Match 1:</strong> ${m.p1} ${m.m1_p1} : ${m.m1_p2} ${m.p2}</p>
-                <p><strong>Match 2:</strong> ${m.p1} ${m.m2_p1} : ${m.m2_p2} ${m.p2}</p>
-            </div>
-            <button class="btn" onclick="confirmResult('${matchKey}', true)">✅ Ergebnis Bestätigen</button>
-            <button class="btn btn-danger" style="margin-top:8px;" onclick="confirmResult('${matchKey}', false)">❌ Ablehnen</button>
-        `;
-        modal.style.display = 'flex';
-    }
-
-    function confirmResult(matchKey, isApproved) {
-        if (isApproved) {
-            appData.matches[matchKey].status = 'CONFIRMED';
-        } else {
-            delete appData.matches[matchKey];
-        }
-        saveData();
-        closeModal();
-        renderDashboard();
-    }
-
-    function closeModal() {
-        document.getElementById('match-modal').style.display = 'none';
-    }
-
-    function renderStandings() {
-        let stats = {};
+    // RENDER TABELLE
+    function renderTable() {
+        const stats = {};
         PLAYERS.forEach(p => {
-            stats[p] = { name: p, played: 0, legsWon: 0, legsLost: 0, points: 0 };
+            stats[p] = {
+                name: p,
+                played: 0,
+                wins: 0,
+                losses: 0,
+                legsWon: 0,
+                legsLost: 0,
+                points: 0
+            };
         });
 
-        Object.values(appData.matches).forEach(m => {
-            if (m.status === 'CONFIRMED') {
-                const p1 = m.p1;
-                const p2 = m.p2;
-
-                stats[p1].played += 1;
-                stats[p2].played += 1;
-
-                stats[p1].legsWon += m.m1_p1;
-                stats[p1].legsLost += m.m1_p2;
-                stats[p1].points += m.m1_p1;
-
-                stats[p2].legsWon += m.m1_p2;
-                stats[p2].legsLost += m.m1_p1;
-                stats[p2].points += m.m1_p2;
-
-                if (m.m1_p1 === 5) stats[p1].points += 1;
-                if (m.m1_p2 === 5) stats[p2].points += 1;
-
-                stats[p1].legsWon += m.m2_p1;
-                stats[p1].legsLost += m.m2_p2;
-                stats[p1].points += m.m2_p1;
-
-                stats[p2].legsWon += m.m2_p2;
-                stats[p2].legsLost += m.m2_p1;
-                stats[p2].points += m.m2_p2;
-
-                if (m.m2_p1 === 5) stats[p1].points += 1;
-                if (m.m2_p2 === 5) stats[p2].points += 1;
+        schedule.forEach(m => {
+            if (m.completed && m.p2 !== null) {
+                applySingleMatch(stats, m.p1, m.p2, m.m1_p1, m.m1_p2);
+                applySingleMatch(stats, m.p1, m.p2, m.m2_p1, m.m2_p2);
             }
         });
 
-        let sorted = Object.values(stats).sort((a, b) => {
+        const ranking = Object.values(stats).sort((a, b) => {
             if (b.points !== a.points) return b.points - a.points;
             const diffA = a.legsWon - a.legsLost;
             const diffB = b.legsWon - b.legsLost;
@@ -893,119 +1001,160 @@
             return b.legsWon - a.legsWon;
         });
 
-        const tbody = document.getElementById('standings-table-body');
-        tbody.innerHTML = '';
+        const tbody = document.getElementById("table-body");
+        tbody.innerHTML = "";
 
-        sorted.forEach((s, idx) => {
-            const diff = s.legsWon - s.legsLost;
-            const diffDisplay = diff > 0 ? `+${diff}` : diff;
-            const rankClass = idx === 0 ? 'rank-1' : '';
-
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="${rankClass}">${idx + 1}</td>
-                <td class="${rankClass}"><strong>${s.name}</strong></td>
-                <td>${s.played}</td>
-                <td>${s.legsWon}:${s.legsLost}</td>
-                <td>${diffDisplay}</td>
-                <td><strong style="color:var(--accent-green);">${s.points}</strong></td>
+        ranking.forEach((row, index) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><span class="rank-badge ${index === 0 ? 'rank-1' : ''}">${index + 1}</span></td>
+                <td style="text-align: left; font-weight: 700; color: var(--sisal-cream);">${row.name}</td>
+                <td>${row.played}</td>
+                <td>${row.wins}</td>
+                <td>${row.losses}</td>
+                <td>${row.legsWon}:${row.legsLost}</td>
+                <td class="points-cell">${row.points}</td>
             `;
-            tbody.appendChild(row);
+            tbody.appendChild(tr);
         });
     }
 
-    function openAdminModal() {
-        const list = document.getElementById('admin-player-list');
-        list.innerHTML = '';
+    function applySingleMatch(stats, p1, p2, s1, s2) {
+        if (s1 === null || s2 === null) return;
 
-        PLAYERS.forEach(p => {
-            const isMaster = appData.isDefaultPassword[p];
-            const item = document.createElement('div');
-            item.style.cssText = "display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:rgba(0,0,0,0.2); padding:10px; border-radius:6px;";
-            item.innerHTML = `
-                <div>
-                    <strong>${p}</strong>
-                    <span style="display:block; font-size:0.75rem; color:var(--text-dim);">${isMaster ? 'Standard-Passwort (Liga2026)' : 'Individuelles Passwort'}</span>
-                </div>
-                <button class="btn btn-small btn-secondary" onclick="resetPlayerPassword('${p}')" ${isMaster ? 'disabled style="opacity:0.5;"' : ''}>Zurücksetzen</button>
-            `;
-            list.appendChild(item);
-        });
+        stats[p1].played += 1;
+        stats[p2].played += 1;
 
-        document.getElementById('admin-modal').style.display = 'flex';
-    }
+        stats[p1].legsWon += s1;
+        stats[p1].legsLost += s2;
+        stats[p2].legsWon += s2;
+        stats[p2].legsLost += s1;
 
-    function resetPlayerPassword(player) {
-        if (confirm(`Passwort für ${player} wirklich auf 'Liga2026' zurücksetzen?`)) {
-            appData.passwords[player] = MASTER_PW;
-            appData.isDefaultPassword[player] = true;
-            saveData();
-            openAdminModal();
+        // 1 Punkt pro Leg
+        stats[p1].points += s1;
+        stats[p2].points += s2;
+
+        // +1 Bonuspunkt für den Matchgewinn (bei 5 Legs)
+        if (s1 === 5) {
+            stats[p1].wins += 1;
+            stats[p2].losses += 1;
+            stats[p1].points += 1;
+        } else if (s2 === 5) {
+            stats[p2].wins += 1;
+            stats[p1].losses += 1;
+            stats[p2].points += 1;
         }
     }
 
-    function closeAdminModal() {
-        document.getElementById('admin-modal').style.display = 'none';
+    // MODAL ERGEBNISSE (NUR ADMIN)
+    function openResultModal(matchId) {
+        if (!isAdmin) return;
+        editingMatchId = matchId;
+        const m = schedule.find(item => item.id === matchId);
+        if (!m) return;
+
+        document.getElementById("modal-match-label").textContent = `${m.p1} vs. ${m.p2} (${m.matchday}. Spieltag)`;
+        document.getElementById("lbl-m1-p1").textContent = m.p1;
+        document.getElementById("lbl-m1-p2").textContent = m.p2;
+        document.getElementById("lbl-m2-p1").textContent = m.p1;
+        document.getElementById("lbl-m2-p2").textContent = m.p2;
+
+        document.getElementById("inp-m1-p1").value = m.m1_p1 !== null ? m.m1_p1 : 0;
+        document.getElementById("inp-m1-p2").value = m.m1_p2 !== null ? m.m1_p2 : 0;
+        document.getElementById("inp-m2-p1").value = m.m2_p1 !== null ? m.m2_p1 : 0;
+        document.getElementById("inp-m2-p2").value = m.m2_p2 !== null ? m.m2_p2 : 0;
+
+        document.getElementById("result-modal").classList.add("active");
     }
 
-    function exportJSON() {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appData, null, 2));
-        const downloadAnchor = document.createElement('a');
-        downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `dart_club_jjagd_backup_${new Date().toISOString().slice(0,10)}.json`);
-        document.body.appendChild(downloadAnchor);
-        downloadAnchor.click();
-        downloadAnchor.remove();
+    function closeResultModal() {
+        document.getElementById("result-modal").classList.remove("active");
+        editingMatchId = null;
     }
 
-    function importJSON(event) {
+    function saveMatchResult() {
+        if (!isAdmin || editingMatchId === null) return;
+
+        const m1p1 = parseInt(document.getElementById("inp-m1-p1").value, 10);
+        const m1p2 = parseInt(document.getElementById("inp-m1-p2").value, 10);
+        const m2p1 = parseInt(document.getElementById("inp-m2-p1").value, 10);
+        const m2p2 = parseInt(document.getElementById("inp-m2-p2").value, 10);
+
+        if ([m1p1, m1p2, m2p1, m2p2].some(v => isNaN(v) || v < 0 || v > 5)) {
+            showToast("Bitte gültige Leg-Zahlen (0 bis 5) eingeben.");
+            return;
+        }
+
+        const m = schedule.find(item => item.id === editingMatchId);
+        m.m1_p1 = m1p1;
+        m.m1_p2 = m1p2;
+        m.m2_p1 = m2p1;
+        m.m2_p2 = m2p2;
+        m.completed = true;
+
+        saveSchedule();
+        closeResultModal();
+        renderSchedule();
+        renderTable();
+        showToast("Ergebnis gespeichert & Tabelle aktualisiert!");
+    }
+
+    // TABS
+    function switchTab(tab) {
+        document.getElementById("btn-tab-schedule").classList.toggle("active", tab === "schedule");
+        document.getElementById("btn-tab-table").classList.toggle("active", tab === "table");
+        document.getElementById("pane-schedule").classList.toggle("active", tab === "schedule");
+        document.getElementById("pane-table").classList.toggle("active", tab === "table");
+    }
+
+    // BACKUP & EXPORT
+    function exportBackupJSON() {
+        const blob = new Blob([JSON.stringify(schedule, null, 2)], { type: "application/json" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `dart_club_jjagd_backup_${new Date().toISOString().slice(0, 10)}.json`;
+        link.click();
+    }
+
+    function importBackupJSON(event) {
         const file = event.target.files[0];
         if (!file) return;
 
         const reader = new FileReader();
         reader.onload = function(e) {
             try {
-                const importedData = JSON.parse(e.target.result);
-                if (importedData.passwords && importedData.matches) {
-                    appData = importedData;
-                    if (!appData.isDefaultPassword) {
-                        appData.isDefaultPassword = {};
-                        PLAYERS.forEach(p => appData.isDefaultPassword[p] = (appData.passwords[p] === MASTER_PW));
-                    }
-                    saveData();
-                    alert("Daten erfolgreich importiert!");
-                    renderDashboard();
+                const imported = JSON.parse(e.target.result);
+                if (Array.isArray(imported) && imported.length > 0) {
+                    schedule = imported;
+                    saveSchedule();
+                    renderSchedule();
+                    renderTable();
+                    showToast("Backup erfolgreich geladen!");
                 } else {
-                    alert("Ungültiges Dateiformat!");
+                    showToast("Ungültige Backup-Datei.");
                 }
             } catch (err) {
-                alert("Fehler beim Lesen der Datei!");
+                showToast("Fehler beim Lesen der Backup-Datei.");
             }
         };
         reader.readAsText(file);
     }
 
-    function exportCSV() {
-        let csvContent = "data:text/csv;charset=utf-8,Spieltag;Spieler 1;Spieler 2;Match 1 P1;Match 1 P2;Match 2 P1;Match 2 P2;Status\n";
-
-        SCHEDULE.forEach(round => {
-            round.matches.forEach((m, idx) => {
-                const key = `R${round.round}_M${idx}`;
-                const match = appData.matches[key] || {};
-                csvContent += `${round.round};${m.p1};${m.p2};${match.m1_p1 ?? 0};${match.m1_p2 ?? 0};${match.m2_p1 ?? 0};${match.m2_p2 ?? 0};${match.status || 'OFFEN'}\n`;
-            });
+    function exportTableCSV() {
+        let csv = "Platz;Spieler;Spiele;Siege;Niederlagen;Legs;Punkte\n";
+        const rows = document.querySelectorAll("#table-body tr");
+        rows.forEach(tr => {
+            const cols = Array.from(tr.querySelectorAll("td")).map(td => td.textContent.trim());
+            csv += cols.join(";") + "\n";
         });
 
-        const encodedUri = encodeURI(csvContent);
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
         const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `dart_club_jjagd_ergebnisse.csv`);
-        document.body.appendChild(link);
+        link.href = URL.createObjectURL(blob);
+        link.download = `dart_club_jjagd_tabelle_${new Date().toISOString().slice(0, 10)}.csv`;
         link.click();
-        link.remove();
     }
-
-    initData();
 </script>
+
 </body>
 </html>
